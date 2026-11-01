@@ -15,7 +15,7 @@ export function normalizeCampaigns(rows) {
       ? row.name
       : id;
     const rawSpendCents = isRecord(row.metrics) ? row.metrics.spendCents : 0;
-    const spendCents = typeof rawSpendCents === 'number' && rawSpendCents >= 0
+    const spendCents = typeof rawSpendCents === 'number' && rawSpendCents >= 0 && Number.isInteger(rawSpendCents)
       ? rawSpendCents
       : 0;
 
