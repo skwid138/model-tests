@@ -6,18 +6,24 @@ export function normalizeCampaigns(rows) {
   if (!Array.isArray(rows)) return [];
 
   return rows.flatMap((row) => {
-    if (!isRecord(row) || typeof row.id !== 'string' || row.id.trim() === '') {
-      return [];
-    }
+    // Reject non-object rows or missing string id
+    if (!isRecord(row) || typeof row.id !== 'string') return [];
 
-    const id = row.id;
-    const name = typeof row.name === 'string' && row.name.trim() !== ''
-      ? row.name
+    const rawId = row.id;
+    const id = typeof rawId === 'string' ? rawId.trim() : '';
+    if (id === '') return [];
+
+    const rawName = row.name;
+    const name = typeof rawName === 'string' && rawName.trim() !== ''
+      ? rawName.trim()
       : id;
+
     const rawSpendCents = isRecord(row.metrics) ? row.metrics.spendCents : 0;
-    const spendCents = typeof rawSpendCents === 'number' && rawSpendCents >= 0
-      ? rawSpendCents
-      : 0;
+    const spendCents =
+      typeof rawSpendCents === 'number' && Number.isInteger(rawSpendCents)
+        && rawSpendCents >= 0 && rawSpendCents <= 1_000_000_000
+        ? rawSpendCents
+        : 0;
 
     return [{ id, name, spendCents }];
   });
