@@ -12,6 +12,7 @@ export function readCampaignRows(response) {
   if (
     body === null ||
     typeof body !== 'object' ||
+    Array.isArray(body) ||
     !Array.isArray(body.items)
   ) {
     return [];
