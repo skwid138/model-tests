@@ -10,12 +10,14 @@ export function normalizeCampaigns(rows) {
       return [];
     }
 
-    const id = row.id;
-    const name = typeof row.name === 'string' && row.name.trim() !== ''
-      ? row.name
-      : id;
+    const id = row.id.trim();
+    const trimmedName = typeof row.name === 'string' ? row.name.trim() : '';
+    const name = trimmedName !== '' ? trimmedName : id;
     const rawSpendCents = isRecord(row.metrics) ? row.metrics.spendCents : 0;
-    const spendCents = typeof rawSpendCents === 'number' && rawSpendCents >= 0
+    const spendCents = typeof rawSpendCents === 'number' 
+      && Number.isInteger(rawSpendCents) 
+      && rawSpendCents >= 0 
+      && rawSpendCents <= 1000000000
       ? rawSpendCents
       : 0;
 
