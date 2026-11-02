@@ -23,10 +23,11 @@ This index covers six executed worker attempts (five local attempts and one clou
 
 The reports use relative paths and source hashes for provenance. They omit raw prompts/transcripts, reasoning, credentials, private endpoints, session identifiers, and machine-local paths.
 
-## Subsequent screening (separate from the original archive)
+## Additional initial screens (separate from the original archive)
 
-The seven entries above remain the original archive and retain their original counts and descriptions. This additional screen is recorded separately. Its report is committed locally on branch `runs/gemma-api-20261102-01` at `6c880fb14c3ddf742cc700772f99ee677052d2eb`; retrieve it with `git show runs/gemma-api-20261102-01:RESULTS.md`. The commit has not been pushed, so no remote link is available.
+The seven entries above remain the original archive and retain their original counts and descriptions. These two later screens are recorded separately. The Gemma report is preserved at commit `6c880fb14c3ddf742cc700772f99ee677052d2eb` on branch `runs/gemma-api-20261102-01`; retrieve it with `git show runs/gemma-api-20261102-01:RESULTS.md`. The Laguna report is preserved at commit `0933459acd174713a418c74ddbc8dc7a8783b1e9` on branch `runs/laguna-api-20261102-01`; retrieve it with `git show runs/laguna-api-20261102-01:RESULTS.md`.
 
 | Case | Selected model | Trial report | Outcome |
 |---|---|---|---|
 | Gemma API screen | `peesea/google/gemma-4-26b-a4b-qat` | Local commit `6c880fb14c3ddf742cc700772f99ee677052d2eb` on `runs/gemma-api-20261102-01`; use `git show runs/gemma-api-20261102-01:RESULTS.md` | Failed semantic screen: the worker submission incorrectly accepted array-valued response bodies with `items`, and the independent grader rejected that behavior (3/4 groups passed). Protocol compliance is not independently certifiable from the available worker record. No repeat is eligible under the 4/4-plus-full-compliance rule. |
+| Laguna API screen | `peesea/laguna-xs-2.1-apex` | Commit `0933459acd174713a418c74ddbc8dc7a8783b1e9` on `runs/laguna-api-20261102-01`; use `git show runs/laguna-api-20261102-01:RESULTS.md` | Failed semantic screen: the independent grader scored 3/4 groups and rejected an array-valued response `body` containing `items`. Worker timing and full protocol compliance are unknown. No repeat is eligible under the 4/4-plus-full-compliance rule. |
