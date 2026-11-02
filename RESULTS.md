@@ -22,3 +22,11 @@ This index covers six executed worker attempts (five local attempts and one clou
 - All source changes remain as trial artifacts. Nothing here claims a production-ready implementation or an accepted local-model qualification.
 
 The reports use relative paths and source hashes for provenance. They omit raw prompts/transcripts, reasoning, credentials, private endpoints, session identifiers, and machine-local paths.
+
+## Subsequent screening (separate from the original archive)
+
+The seven entries above remain the original archive and retain their original counts and descriptions. This additional screen is recorded separately. Its report is committed locally on branch `runs/gemma-api-20261102-01` at `6c880fb14c3ddf742cc700772f99ee677052d2eb`; retrieve it with `git show runs/gemma-api-20261102-01:RESULTS.md`. The commit has not been pushed, so no remote link is available.
+
+| Case | Selected model | Trial report | Outcome |
+|---|---|---|---|
+| Gemma API screen | `peesea/google/gemma-4-26b-a4b-qat` | Local commit `6c880fb14c3ddf742cc700772f99ee677052d2eb` on `runs/gemma-api-20261102-01`; use `git show runs/gemma-api-20261102-01:RESULTS.md` | Failed semantic screen: the worker submission incorrectly accepted array-valued response bodies with `items`, and the independent grader rejected that behavior (3/4 groups passed). Protocol compliance is not independently certifiable from the available worker record. No repeat is eligible under the 4/4-plus-full-compliance rule. |
