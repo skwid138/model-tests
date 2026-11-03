@@ -1,0 +1,50 @@
+{
+  "reviewerLabel": "B",
+  "answerKeyAccess": "none",
+  "evidenceReviews": [
+    {
+      "questionId": "B1",
+      "factId": "ordinaryResult",
+      "checklist": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "justification": "The cited ranges cover the full path: index.mjs:4-5 dispatches through parsing and routing; parse-request.mjs:5-15 normalizes the query and creates tokens; route-request.mjs:3-11 supplies the returned fields; resolve-policy.mjs:3-9 selects the default when no override is given; defaults.mjs:1-4 supplies the limits."
+    },
+    {
+      "questionId": "B2",
+      "factId": "missingInput",
+      "checklist": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "justification": "The cited parser range, parse-request.mjs:5-15, covers empty-query tokenization and standard-mode normalization. The cited route, policy, and defaults ranges (route-request.mjs:3-11, resolve-policy.mjs:3-9, defaults.mjs:1-4) cover the returned fields and default budget; index.mjs:4-5 connects the path."
+    },
+    {
+      "questionId": "B2",
+      "factId": "blankStrict",
+      "checklist": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "justification": "parse-request.mjs:5-15 covers trimming the blank query to empty tokens while retaining strict mode. route-request.mjs:3-11, resolve-policy.mjs:3-9, and defaults.mjs:1-4 cover the result fields and strict default budget; index.mjs:4-5 connects the path."
+    },
+    {
+      "questionId": "B2",
+      "factId": "invalidFields",
+      "checklist": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "justification": "parse-request.mjs:5-15 covers the non-string query becoming empty and the unrecognized mode becoming standard. route-request.mjs:3-11, resolve-policy.mjs:3-9, and defaults.mjs:1-4 cover the returned fields and standard default budget; index.mjs:4-5 connects the path."
+    },
+    {
+      "questionId": "B3",
+      "factId": "zeroOverrideResult",
+      "checklist": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "justification": "index.mjs:4-5 and parse-request.mjs:5-15 cover dispatch and the blank strict input. resolve-policy.mjs:3-9 shows that a safe nonnegative integer override, including zero, is selected; route-request.mjs:3-11 covers the returned fields and acceptance calculation."
+    },
+    {
+      "questionId": "B3",
+      "factId": "deploymentLimit",
+      "checklist": {"citationsEntailClaim": false, "branchCoverageComplete": false},
+      "justification": "The cited boundaries.md:7-8 contains the section heading and a blank line, not the snapshot limitation. The relevant statement is at boundaries.md:9-10, which is outside the submitted citation range; the submitted citation therefore does not establish the unknown deployment value or cover the evidence needed for that conclusion."
+    }
+  ],
+  "claimReviews": [
+    {
+      "questionId": "B1",
+      "claimId": "B1-C01",
+      "checklist": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"},
+      "justification": "The single claim is directly supported by index.mjs:4-5, which calls routeRequest(parseRequest(input)). I checked the complete finite source allowlist: index.mjs, input/parse-request.mjs, routing/route-request.mjs, policy/resolve-policy.mjs, policy/defaults.mjs, batch/inspect-batch.mjs, admin/preview-policy.mjs, and legacy/resolve-policy.mjs."
+    }
+  ]
+}

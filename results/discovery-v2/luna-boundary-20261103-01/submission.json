@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 2,
+  "caseId": "boundary",
+  "taskVersion": 2,
+  "sourceVersion": 2,
+  "resultsText": "<results>\n<files>\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/index.mjs - Connects request parsing to routing.\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/input/parse-request.mjs - Normalizes query and mode, and produces tokens.\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/routing/route-request.mjs - Constructs the returned fields from the policy and parsed request.\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/resolve-policy.mjs - Applies a valid nonnegative integer override or uses the mode default.\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/defaults.mjs - Defines standard and strict source-level limits.\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/batch/inspect-batch.mjs - Adjacent batch entry point; not used by these calls.\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/admin/preview-policy.mjs - Adjacent policy preview entry point; not used by these calls.\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/legacy/resolve-policy.mjs - Separate legacy policy implementation; not called by `inspectRequest`.\n</files>\n\n<answer>\nB1 uses standard mode and tokenizes the normalized query as `[\"amber\",\"finch\"]`. B2 returns standard mode for missing or invalid values; the explicitly strict blank query remains strict. B3’s valid zero override is applied, so the blank query is accepted with budget 0. The static snapshot does not establish a live deployment’s `limitOverride`.\n\nCitations: `inspectRequest` dispatches through the parser and router ([index.mjs:4-5](${TRIAL_ROOT}/fixtures/discovery-v2/src/index.mjs#L4-L5)). Parsing behavior ([parse-request.mjs:5-15](${TRIAL_ROOT}/fixtures/discovery-v2/src/input/parse-request.mjs#L5-L15)); returned fields ([route-request.mjs:3-11](${TRIAL_ROOT}/fixtures/discovery-v2/src/routing/route-request.mjs#L3-L11)); override and default selection ([resolve-policy.mjs:3-9](${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/resolve-policy.mjs#L3-L9)); source defaults ([defaults.mjs:1-4](${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/defaults.mjs#L1-L4)). The supplied task describes a finite static snapshot without deployment files or runtime configuration ([boundaries.md:7-8](${TRIAL_ROOT}/fixtures/discovery-v2/tasks/boundaries.md#L7-L8)).\n\n```discovery-facts\n{\n  \"B1\": {\n    \"result\": {\n      \"mode\": \"standard\",\n      \"route\": \"open\",\n      \"tokens\": [\"amber\", \"finch\"],\n      \"budget\": 4,\n      \"accepted\": true\n    }\n  },\n  \"B2\": {\n    \"missingInput\": {\n      \"mode\": \"standard\",\n      \"route\": \"open\",\n      \"tokens\": [],\n      \"budget\": 4,\n      \"accepted\": true\n    },\n    \"blankStrict\": {\n      \"mode\": \"strict\",\n      \"route\": \"guarded\",\n      \"tokens\": [],\n      \"budget\": 2,\n      \"accepted\": true\n    },\n    \"invalidFields\": {\n      \"mode\": \"standard\",\n      \"route\": \"open\",\n      \"tokens\": [],\n      \"budget\": 4,\n      \"accepted\": true\n    }\n  },\n  \"B3\": {\n    \"zeroOverrideResult\": {\n      \"mode\": \"strict\",\n      \"route\": \"guarded\",\n      \"tokens\": [],\n      \"budget\": 0,\n      \"accepted\": true\n    },\n    \"deploymentLimit\": {\n      \"status\": \"unknown\",\n      \"value\": null,\n      \"snapshotLimitation\": true\n    }\n  }\n}\n```\n</answer>\n\n<next_steps>\nReady to proceed.\n</next_steps>\n</results>",
+  "typedFragment": {
+    "status": "valid",
+    "facts": {
+      "B1": {
+        "result": {
+          "mode": "standard",
+          "route": "open",
+          "tokens": [
+            "amber",
+            "finch"
+          ],
+          "budget": 4,
+          "accepted": true
+        }
+      },
+      "B2": {
+        "missingInput": {
+          "mode": "standard",
+          "route": "open",
+          "tokens": [],
+          "budget": 4,
+          "accepted": true
+        },
+        "blankStrict": {
+          "mode": "strict",
+          "route": "guarded",
+          "tokens": [],
+          "budget": 2,
+          "accepted": true
+        },
+        "invalidFields": {
+          "mode": "standard",
+          "route": "open",
+          "tokens": [],
+          "budget": 4,
+          "accepted": true
+        }
+      },
+      "B3": {
+        "zeroOverrideResult": {
+          "mode": "strict",
+          "route": "guarded",
+          "tokens": [],
+          "budget": 0,
+          "accepted": true
+        },
+        "deploymentLimit": {
+          "status": "unknown",
+          "value": null,
+          "snapshotLimitation": true
+        }
+      }
+    }
+  },
+  "answers": {
+    "B1": {
+      "prose": "B1 uses standard mode and tokenizes the normalized query as `[\"amber\",\"finch\"]`. `inspectRequest` dispatches through the parser and router.",
+      "citations": [
+        {"factId": "ordinaryResult", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "ordinaryResult", "path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+        {"factId": "ordinaryResult", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+        {"factId": "ordinaryResult", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+        {"factId": "ordinaryResult", "path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+      ],
+      "additionalClaims": [
+        {
+          "id": "B1-C01",
+          "text": "`inspectRequest` dispatches through the parser and router",
+          "citations": [
+            {"path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5}
+          ]
+        }
+      ]
+    },
+    "B2": {
+      "prose": "B2 returns standard mode for missing or invalid values; the explicitly strict blank query remains strict.",
+      "citations": [
+        {"factId": "missingInput", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "missingInput", "path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+        {"factId": "missingInput", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+        {"factId": "missingInput", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+        {"factId": "missingInput", "path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4},
+        {"factId": "blankStrict", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "blankStrict", "path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+        {"factId": "blankStrict", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+        {"factId": "blankStrict", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+        {"factId": "blankStrict", "path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4},
+        {"factId": "invalidFields", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "invalidFields", "path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+        {"factId": "invalidFields", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+        {"factId": "invalidFields", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+        {"factId": "invalidFields", "path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+      ],
+      "additionalClaims": []
+    },
+    "B3": {
+      "prose": "B3’s valid zero override is applied, so the blank query is accepted with budget 0. The static snapshot does not establish a live deployment’s `limitOverride`.",
+      "citations": [
+        {"factId": "zeroOverrideResult", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "zeroOverrideResult", "path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+        {"factId": "zeroOverrideResult", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+        {"factId": "zeroOverrideResult", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+        {"factId": "deploymentLimit", "path": "fixtures/discovery-v2/tasks/boundaries.md", "startLine": 7, "endLine": 8}
+      ],
+      "additionalClaims": []
+    }
+  },
+  "evidenceReviews": [
+    {
+      "questionId": "B1",
+      "factId": "ordinaryResult",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B2",
+      "factId": "missingInput",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B2",
+      "factId": "blankStrict",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B2",
+      "factId": "invalidFields",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B3",
+      "factId": "zeroOverrideResult",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B3",
+      "factId": "deploymentLimit",
+      "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false},
+      "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": false}
+    }
+  ],
+  "claimReviews": [
+    {
+      "questionId": "B1",
+      "claimId": "B1-C01",
+      "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"},
+      "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}
+    }
+  ]
+}

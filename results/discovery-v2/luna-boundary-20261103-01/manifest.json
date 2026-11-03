@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 2,
+  "caseId": "boundary",
+  "taskVersion": 2,
+  "sourceVersion": 2,
+  "model": {
+    "provider": {"value": "github-copilot", "provenance": "observed"},
+    "modelId": {"value": "github-copilot/gpt-6-luna#medium", "provenance": "observed"},
+    "rolePromptRef": {"value": null, "provenance": "unknown"},
+    "settingsRef": {"value": null, "provenance": "unknown"},
+    "roleBaselineSha256": {"value": "09c026ccd312bb5acafb85c37e24b9b5fb50eedd8f49288148ee3dc9dba406e2", "provenance": "observed"},
+    "providerArtifactSha256": {"value": null, "provenance": "unknown"}
+  },
+  "hardware": {
+    "ramMiB": {"value": null, "provenance": "unknown"},
+    "freeVramMiB": {"value": null, "provenance": "unknown"}
+  },
+  "timing": {
+    "submittedAtUtc": {"value": null, "provenance": "unknown"},
+    "elapsedSeconds": {"value": null, "provenance": "unknown"},
+    "retries": {"value": null, "provenance": "unknown"}
+  },
+  "toolCalls": {
+    "count": {"value": null, "provenance": "unknown"},
+    "traceStatus": "unavailable",
+    "traceSource": {"value": null, "provenance": "unknown"},
+    "coverage": "unknown",
+    "coverageRefs": []
+  },
+  "instructions": {"status": "UNKNOWN", "evidenceRefs": []},
+  "telemetry": {
+    "status": "not_applicable_explicitly_approved",
+    "cloudNotApplicableApproved": true,
+    "provenance": "declared",
+    "artifactRefs": []
+  },
+  "operatorGates": {
+    "timeLimitSeconds": 180,
+    "minimumRamMiB": 4096,
+    "minimumFreeVramMiB": 512,
+    "status": "UNKNOWN",
+    "stopReason": "unknown",
+    "evidenceRefs": []
+  },
+  "fixtureHashes": {
+    "taskPath": "fixtures/discovery-v2/tasks/boundaries.md",
+    "taskSha256": "094487392bbe7ef50e30d0cc6f2e1c6d1b838bee8b73184dcca965c4cb8d41dc",
+    "sourceFilesSha256": {
+      "fixtures/discovery-v2/src/admin/preview-policy.mjs": "75f4908f84e58846721349f9a941d7f469ad9fd70a34b4311914b44267ff82ae",
+      "fixtures/discovery-v2/src/batch/inspect-batch.mjs": "7702ca7f13a9d7701cd9e74dd06a9e33313f56585343af42ad9d103e6808941c",
+      "fixtures/discovery-v2/src/index.mjs": "943332aa3349d7dd911c1c46c7a9b4a5d287c0cb8a8c59b28fe2f862503318fb",
+      "fixtures/discovery-v2/src/input/parse-request.mjs": "793d3b178ac1905a7f8995440ea5932f6611e755a7b14d1e5e3c906b69659053",
+      "fixtures/discovery-v2/src/legacy/resolve-policy.mjs": "33b6019cf4d381cdd137a7d320027d1ae5fede2e974f2f5b56e5fc91ad9cf409",
+      "fixtures/discovery-v2/src/policy/defaults.mjs": "adbad648824d3d63893fd717f5a4249e84d81774e66741bfdf72bb621e75a4e3",
+      "fixtures/discovery-v2/src/policy/resolve-policy.mjs": "299ee278269309de1dcfe8438a5b1545c5d10cde6852d08e8f3499399aee5914",
+      "fixtures/discovery-v2/src/routing/route-request.mjs": "bbaefc350d194c2af46de7b5fca22de39042a415399160cf92b811729edb91ac"
+    },
+    "answerKeyPath": "grading/discovery-v2/answer-keys/boundary.json",
+    "answerFileSha256": "259fcf2f762d85c5d70fdfdfd0d0022250415ecfdbb62d51e7ad5d2b194a18c1"
+  },
+  "evidenceReviews": [
+    {
+      "questionId": "B1",
+      "factId": "ordinaryResult",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B2",
+      "factId": "missingInput",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B2",
+      "factId": "blankStrict",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B2",
+      "factId": "invalidFields",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B3",
+      "factId": "zeroOverrideResult",
+      "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true},
+      "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}
+    },
+    {
+      "questionId": "B3",
+      "factId": "deploymentLimit",
+      "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false},
+      "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": false}
+    }
+  ],
+  "claimReviews": [
+    {
+      "questionId": "B1",
+      "claimId": "B1-C01",
+      "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"},
+      "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}
+    }
+  ],
+  "artifactRefs": [
+    "results/discovery-v2/luna-boundary-20261103-01/response.md",
+    "results/discovery-v2/luna-boundary-20261103-01/submission.json",
+    "results/discovery-v2/luna-boundary-20261103-01/OBSERVATIONS.md",
+    "results/discovery-v2/luna-boundary-20261103-01/review-A.json",
+    "results/discovery-v2/luna-boundary-20261103-01/review-B.json",
+    "results/discovery-v2/luna-boundary-20261103-01/grade.json",
+    "results/discovery-v2/luna-boundary-20261103-01/RESULTS.md"
+  ],
+  "protocolStatus": "UNKNOWN"
+}
