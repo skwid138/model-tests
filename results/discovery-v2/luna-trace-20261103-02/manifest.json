@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "caseId": "trace",
+  "taskVersion": 2,
+  "sourceVersion": 2,
+  "model": {
+    "provider": {"value": "github-copilot", "provenance": "observed"},
+    "modelId": {"value": "github-copilot/gpt-6-luna#medium", "provenance": "observed"},
+    "rolePromptRef": {"value": null, "provenance": "unknown"},
+    "settingsRef": {"value": null, "provenance": "unknown"},
+    "roleBaselineSha256": {"value": "09c026ccd312bb5acafb85c37e24b9b5fb50eedd8f49288148ee3dc9dba406e2", "provenance": "observed"},
+    "providerArtifactSha256": {"value": null, "provenance": "unknown"}
+  },
+  "hardware": {
+    "ramMiB": {"value": null, "provenance": "unknown"},
+    "freeVramMiB": {"value": null, "provenance": "unknown"}
+  },
+  "timing": {
+    "submittedAtUtc": {"value": null, "provenance": "unknown"},
+    "elapsedSeconds": {"value": null, "provenance": "unknown"},
+    "retries": {"value": null, "provenance": "unknown"}
+  },
+  "toolCalls": {
+    "count": {"value": null, "provenance": "unknown"},
+    "traceStatus": "unavailable",
+    "traceSource": {"value": null, "provenance": "unknown"},
+    "coverage": "unknown",
+    "coverageRefs": []
+  },
+  "instructions": {"status": "UNKNOWN", "evidenceRefs": []},
+  "telemetry": {
+    "status": "not_applicable_explicitly_approved",
+    "cloudNotApplicableApproved": true,
+    "provenance": "declared",
+    "artifactRefs": []
+  },
+  "operatorGates": {
+    "timeLimitSeconds": 180,
+    "minimumRamMiB": 4096,
+    "minimumFreeVramMiB": 512,
+    "status": "UNKNOWN",
+    "stopReason": "unknown",
+    "evidenceRefs": []
+  },
+  "fixtureHashes": {
+    "taskPath": "fixtures/discovery-v2/tasks/trace.md",
+    "taskSha256": "39abf3fb2ca1545605b1b32e1d55cf35a9465f191ba372c5d9e04d6b07b9b261",
+    "sourceFilesSha256": {
+      "fixtures/discovery-v2/src/admin/preview-policy.mjs": "75f4908f84e58846721349f9a941d7f469ad9fd70a34b4311914b44267ff82ae",
+      "fixtures/discovery-v2/src/batch/inspect-batch.mjs": "7702ca7f13a9d7701cd9e74dd06a9e33313f56585343af42ad9d103e6808941c",
+      "fixtures/discovery-v2/src/index.mjs": "943332aa3349d7dd911c1c46c7a9b4a5d287c0cb8a8c59b28fe2f862503318fb",
+      "fixtures/discovery-v2/src/input/parse-request.mjs": "793d3b178ac1905a7f8995440ea5932f6611e755a7b14d1e5e3c906b69659053",
+      "fixtures/discovery-v2/src/legacy/resolve-policy.mjs": "33b6019cf4d381cdd137a7d320027d1ae5fede2e974f2f5b56e5fc91ad9cf409",
+      "fixtures/discovery-v2/src/policy/defaults.mjs": "adbad648824d3d63893fd717f5a4249e84d81774e66741bfdf72bb621e75a4e3",
+      "fixtures/discovery-v2/src/policy/resolve-policy.mjs": "299ee278269309de1dcfe8438a5b1545c5d10cde6852d08e8f3499399aee5914",
+      "fixtures/discovery-v2/src/routing/route-request.mjs": "bbaefc350d194c2af46de7b5fca22de39042a415399160cf92b811729edb91ac"
+    },
+    "answerKeyPath": "grading/discovery-v2/answer-keys/trace.json",
+    "answerFileSha256": "94fba8813d302ea0250abb69f8863018f1091f6fd4941235bdad3d65b14e530f"
+  },
+  "evidenceReviews": [
+    {"questionId": "T1", "factId": "entry", "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T1", "factId": "firstCall", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": true}},
+    {"questionId": "T2", "factId": "executionPath", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T2", "factId": "decision", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T3", "factId": "directCallSites", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": true}},
+    {"questionId": "T3", "factId": "lookalike", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T3", "factId": "override", "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}}
+  ],
+  "claimReviews": [
+    {"questionId": "T1", "claimId": "T1-C01", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C02", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C03", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C01", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C02", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}}
+  ],
+  "artifactRefs": ["response.md", "submission.json", "OBSERVATIONS.md", "review-A.json", "review-B.json", "grade.json", "RESULTS.md"],
+  "protocolStatus": "UNKNOWN"
+}

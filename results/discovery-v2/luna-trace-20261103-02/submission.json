@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 2,
+  "caseId": "trace",
+  "taskVersion": 2,
+  "sourceVersion": 2,
+  "resultsText": "<results>\n<files>\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/index.mjs - exports the public entry and invokes the parser before routing (lines 1–5).\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/input/parse-request.mjs - parses the request and normalizes strict mode (lines 1–15).\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/routing/route-request.mjs - calls the active resolver and selects the route and budget (lines 1–12).\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/resolve-policy.mjs - validates the override and chooses the default when it is invalid (lines 1–9).\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/defaults.mjs - defines the strict-mode default limit (lines 1–4).\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/admin/preview-policy.mjs - contains another direct call site of the active resolver (lines 1–4).\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/legacy/resolve-policy.mjs - contains the same-named implementation outside the active call path (lines 1–5).\n- ${TRIAL_ROOT}/fixtures/discovery-v2/src/batch/inspect-batch.mjs - calls the public entry, not the policy resolver directly (lines 1–5).\n</files>\n\n<answer>\n`inspectRequest` first invokes `parseRequest`; parsing and route selection are in separate modules. For the strict request, the resolver uses the strict default of 2, and the router selects `guarded`. The active resolver is called directly by `routeRequest` and `previewPolicy`; the legacy resolver is a separate implementation.\n\nCitations: the entry call is at `${TRIAL_ROOT}/fixtures/discovery-v2/src/index.mjs:4-5`; parsing and mode normalization are at `${TRIAL_ROOT}/fixtures/discovery-v2/src/input/parse-request.mjs:1-15`. The resolver call, route selection, and returned budget are at `${TRIAL_ROOT}/fixtures/discovery-v2/src/routing/route-request.mjs:3-11`; the resolver’s default lookup is at `${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/resolve-policy.mjs:3-9`, and the strict default value is at `${TRIAL_ROOT}/fixtures/discovery-v2/src/policy/defaults.mjs:1-4`. Direct call sites are at `${TRIAL_ROOT}/fixtures/discovery-v2/src/routing/route-request.mjs:1-4` and `${TRIAL_ROOT}/fixtures/discovery-v2/src/admin/preview-policy.mjs:1-4`. The separate legacy implementation is at `${TRIAL_ROOT}/fixtures/discovery-v2/src/legacy/resolve-policy.mjs:1-5`.\n\n```discovery-facts\n{\n  \"T1\": {\n    \"entry\": {\n      \"file\": \"fixtures/discovery-v2/src/index.mjs\",\n      \"symbol\": \"inspectRequest\"\n    },\n    \"firstCall\": {\n      \"file\": \"fixtures/discovery-v2/src/input/parse-request.mjs\",\n      \"symbol\": \"parseRequest\"\n    }\n  },\n  \"T2\": {\n    \"executionPath\": [\n      \"fixtures/discovery-v2/src/index.mjs\",\n      \"fixtures/discovery-v2/src/input/parse-request.mjs\",\n      \"fixtures/discovery-v2/src/routing/route-request.mjs\",\n      \"fixtures/discovery-v2/src/policy/resolve-policy.mjs\",\n      \"fixtures/discovery-v2/src/policy/defaults.mjs\"\n    ],\n    \"decision\": {\n      \"route\": \"guarded\",\n      \"budget\": 2\n    }\n  },\n  \"T3\": {\n    \"directCallSites\": [\n      {\n        \"file\": \"fixtures/discovery-v2/src/routing/route-request.mjs\",\n        \"containingFunction\": \"routeRequest\"\n      },\n      {\n        \"file\": \"fixtures/discovery-v2/src/admin/preview-policy.mjs\",\n        \"containingFunction\": \"previewPolicy\"\n      }\n    ],\n    \"lookalike\": {\n      \"file\": \"fixtures/discovery-v2/src/legacy/resolve-policy.mjs\",\n      \"symbol\": \"resolvePolicy\",\n      \"onActiveCallPath\": false\n    },\n    \"override\": {\n      \"valid\": {\n        \"constraint\": {\n          \"isInteger\": true,\n          \"isSafeInteger\": true,\n          \"lowerBound\": 0,\n          \"lowerBoundInclusive\": true\n        },\n        \"effect\": {\n          \"action\": \"replace\",\n          \"target\": \"effective_budget\"\n        }\n      },\n      \"invalid\": {\n        \"effect\": {\n          \"action\": \"fallback\",\n          \"target\": \"mode_default\"\n        }\n      }\n    }\n  }\n}\n```\n</answer>\n\n<next_steps>\nReady to proceed.\n</next_steps>\n</results>",
+  "typedFragment": {
+    "status": "valid",
+    "facts": {
+      "T1": {
+        "entry": {
+          "file": "fixtures/discovery-v2/src/index.mjs",
+          "symbol": "inspectRequest"
+        },
+        "firstCall": {
+          "file": "fixtures/discovery-v2/src/input/parse-request.mjs",
+          "symbol": "parseRequest"
+        }
+      },
+      "T2": {
+        "executionPath": [
+          "fixtures/discovery-v2/src/index.mjs",
+          "fixtures/discovery-v2/src/input/parse-request.mjs",
+          "fixtures/discovery-v2/src/routing/route-request.mjs",
+          "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+          "fixtures/discovery-v2/src/policy/defaults.mjs"
+        ],
+        "decision": {
+          "route": "guarded",
+          "budget": 2
+        }
+      },
+      "T3": {
+        "directCallSites": [
+          {
+            "file": "fixtures/discovery-v2/src/routing/route-request.mjs",
+            "containingFunction": "routeRequest"
+          },
+          {
+            "file": "fixtures/discovery-v2/src/admin/preview-policy.mjs",
+            "containingFunction": "previewPolicy"
+          }
+        ],
+        "lookalike": {
+          "file": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs",
+          "symbol": "resolvePolicy",
+          "onActiveCallPath": false
+        },
+        "override": {
+          "valid": {
+            "constraint": {
+              "isInteger": true,
+              "isSafeInteger": true,
+              "lowerBound": 0,
+              "lowerBoundInclusive": true
+            },
+            "effect": {
+              "action": "replace",
+              "target": "effective_budget"
+            }
+          },
+          "invalid": {
+            "effect": {
+              "action": "fallback",
+              "target": "mode_default"
+            }
+          }
+        }
+      }
+    }
+  },
+  "answers": {
+    "T1": {
+      "prose": "`inspectRequest` first invokes `parseRequest`; parsing and route selection are in separate modules.",
+      "citations": [
+        {"factId": "entry", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "firstCall", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "firstCall", "path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 15}
+      ],
+      "additionalClaims": [
+        {
+          "id": "T1-C01",
+          "text": "parsing and route selection are in separate modules.",
+          "citations": [
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 15},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11}
+          ]
+        },
+        {
+          "id": "T1-C02",
+          "text": "parses the request",
+          "citations": [{"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 15}]
+        },
+        {
+          "id": "T1-C03",
+          "text": "normalizes strict mode",
+          "citations": [{"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 15}]
+        }
+      ]
+    },
+    "T2": {
+      "prose": "For the strict request, the resolver uses the strict default of 2, and the router selects `guarded`.",
+      "citations": [
+        {"factId": "executionPath", "path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+        {"factId": "executionPath", "path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 15},
+        {"factId": "executionPath", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+        {"factId": "decision", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+        {"factId": "executionPath", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+        {"factId": "decision", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+        {"factId": "executionPath", "path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4},
+        {"factId": "decision", "path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+      ],
+      "additionalClaims": []
+    },
+    "T3": {
+      "prose": "The active resolver is called directly by `routeRequest` and `previewPolicy`; the legacy resolver is a separate implementation.",
+      "citations": [
+        {"factId": "directCallSites", "path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 1, "endLine": 4},
+        {"factId": "directCallSites", "path": "fixtures/discovery-v2/src/admin/preview-policy.mjs", "startLine": 1, "endLine": 4},
+        {"factId": "lookalike", "path": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs", "startLine": 1, "endLine": 5},
+        {"factId": "override", "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9}
+      ],
+      "additionalClaims": [
+        {
+          "id": "T3-C01",
+          "text": "the legacy resolver is a separate implementation.",
+          "citations": [
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs", "startLine": 1, "endLine": 5}
+          ]
+        },
+        {
+          "id": "T3-C02",
+          "text": "calls the public entry, not the policy resolver directly.",
+          "citations": [{"path": "fixtures/discovery-v2/src/batch/inspect-batch.mjs", "startLine": 1, "endLine": 5}]
+        }
+      ]
+    }
+  },
+  "evidenceReviews": [
+    {"questionId": "T1", "factId": "entry", "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T1", "factId": "firstCall", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": true}},
+    {"questionId": "T2", "factId": "executionPath", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T2", "factId": "decision", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T3", "factId": "directCallSites", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": true}},
+    {"questionId": "T3", "factId": "lookalike", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}, "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T3", "factId": "override", "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true}, "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}}
+  ],
+  "claimReviews": [
+    {"questionId": "T1", "claimId": "T1-C01", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C02", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C03", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C01", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C02", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}, "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}}
+  ]
+}

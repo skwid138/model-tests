@@ -1,0 +1,640 @@
+{
+  "schemaVersion": 2,
+  "caseId": "trace",
+  "protocolStatus": "UNKNOWN",
+  "formatStatus": "valid",
+  "typedShapeIssues": [],
+  "totals": {
+    "correct": 7,
+    "abstentions": 0,
+    "denominator": 7,
+    "missing": 0,
+    "invalid": 0,
+    "incorrect": 0,
+    "unsupportedClaims": 0,
+    "unresolvedClaims": 0
+  },
+  "items": [
+    {
+      "questionId": "T1",
+      "tier": "easy",
+      "facts": [
+        {
+          "id": "entry",
+          "outcome": "correct",
+          "citation": {
+            "status": "valid",
+            "citations": [
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/index.mjs",
+                "startLine": 4,
+                "endLine": 5
+              }
+            ],
+            "canonicalSpanCoverage": [
+              {
+                "spanIndex": 0,
+                "path": "fixtures/discovery-v2/src/index.mjs",
+                "startLine": 4,
+                "endLine": 5,
+                "overlaps": true
+              }
+            ]
+          },
+          "evidenceReview": {
+            "questionId": "T1",
+            "factId": "entry",
+            "rubricVersion": 2,
+            "status": "SUPPORTED",
+            "requiresAdjudication": false,
+            "reasonCodes": [],
+            "reviewerA": {
+              "reviewerLabel": "A",
+              "citationsEntailClaim": true,
+              "branchCoverageComplete": true,
+              "decision": "SUPPORTED"
+            },
+            "reviewerB": {
+              "reviewerLabel": "B",
+              "citationsEntailClaim": true,
+              "branchCoverageComplete": true,
+              "decision": "SUPPORTED"
+            }
+          }
+        },
+        {
+          "id": "firstCall",
+          "outcome": "correct",
+          "citation": {
+            "status": "valid",
+            "citations": [
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/index.mjs",
+                "startLine": 4,
+                "endLine": 5
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/input/parse-request.mjs",
+                "startLine": 1,
+                "endLine": 15
+              }
+            ],
+            "canonicalSpanCoverage": [
+              {
+                "spanIndex": 0,
+                "path": "fixtures/discovery-v2/src/index.mjs",
+                "startLine": 4,
+                "endLine": 5,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 1,
+                "path": "fixtures/discovery-v2/src/input/parse-request.mjs",
+                "startLine": 1,
+                "endLine": 1,
+                "overlaps": true
+              }
+            ]
+          },
+          "evidenceReview": {
+            "questionId": "T1",
+            "factId": "firstCall",
+            "rubricVersion": 2,
+            "status": "UNRESOLVED",
+            "requiresAdjudication": true,
+            "reasonCodes": [
+              "reviewer_disagreement"
+            ],
+            "reviewerA": {
+              "reviewerLabel": "A",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": false,
+              "decision": "UNSUPPORTED"
+            },
+            "reviewerB": {
+              "reviewerLabel": "B",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": true,
+              "decision": "UNSUPPORTED"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "questionId": "T2",
+      "tier": "medium",
+      "facts": [
+        {
+          "id": "executionPath",
+          "outcome": "correct",
+          "citation": {
+            "status": "valid",
+            "citations": [
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/index.mjs",
+                "startLine": 4,
+                "endLine": 5
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/input/parse-request.mjs",
+                "startLine": 1,
+                "endLine": 15
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/routing/route-request.mjs",
+                "startLine": 3,
+                "endLine": 11
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+                "startLine": 3,
+                "endLine": 9
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/policy/defaults.mjs",
+                "startLine": 1,
+                "endLine": 4
+              }
+            ],
+            "canonicalSpanCoverage": [
+              {
+                "spanIndex": 0,
+                "path": "fixtures/discovery-v2/src/index.mjs",
+                "startLine": 1,
+                "endLine": 5,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 1,
+                "path": "fixtures/discovery-v2/src/input/parse-request.mjs",
+                "startLine": 8,
+                "endLine": 15,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 2,
+                "path": "fixtures/discovery-v2/src/routing/route-request.mjs",
+                "startLine": 1,
+                "endLine": 11,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 3,
+                "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+                "startLine": 1,
+                "endLine": 9,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 4,
+                "path": "fixtures/discovery-v2/src/policy/defaults.mjs",
+                "startLine": 1,
+                "endLine": 4,
+                "overlaps": true
+              }
+            ]
+          },
+          "evidenceReview": {
+            "questionId": "T2",
+            "factId": "executionPath",
+            "rubricVersion": 2,
+            "status": "UNRESOLVED",
+            "requiresAdjudication": true,
+            "reasonCodes": [
+              "reviewer_disagreement"
+            ],
+            "reviewerA": {
+              "reviewerLabel": "A",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": false,
+              "decision": "UNSUPPORTED"
+            },
+            "reviewerB": {
+              "reviewerLabel": "B",
+              "citationsEntailClaim": true,
+              "branchCoverageComplete": true,
+              "decision": "SUPPORTED"
+            }
+          }
+        },
+        {
+          "id": "decision",
+          "outcome": "correct",
+          "citation": {
+            "status": "valid",
+            "citations": [
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/routing/route-request.mjs",
+                "startLine": 3,
+                "endLine": 11
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+                "startLine": 3,
+                "endLine": 9
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/policy/defaults.mjs",
+                "startLine": 1,
+                "endLine": 4
+              }
+            ],
+            "canonicalSpanCoverage": [
+              {
+                "spanIndex": 0,
+                "path": "fixtures/discovery-v2/src/routing/route-request.mjs",
+                "startLine": 7,
+                "endLine": 11,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 1,
+                "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+                "startLine": 3,
+                "endLine": 9,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 2,
+                "path": "fixtures/discovery-v2/src/policy/defaults.mjs",
+                "startLine": 1,
+                "endLine": 4,
+                "overlaps": true
+              }
+            ]
+          },
+          "evidenceReview": {
+            "questionId": "T2",
+            "factId": "decision",
+            "rubricVersion": 2,
+            "status": "UNRESOLVED",
+            "requiresAdjudication": true,
+            "reasonCodes": [
+              "reviewer_disagreement"
+            ],
+            "reviewerA": {
+              "reviewerLabel": "A",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": false,
+              "decision": "UNSUPPORTED"
+            },
+            "reviewerB": {
+              "reviewerLabel": "B",
+              "citationsEntailClaim": true,
+              "branchCoverageComplete": true,
+              "decision": "SUPPORTED"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "questionId": "T3",
+      "tier": "hard",
+      "facts": [
+        {
+          "id": "directCallSites",
+          "outcome": "correct",
+          "citation": {
+            "status": "valid",
+            "citations": [
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/routing/route-request.mjs",
+                "startLine": 1,
+                "endLine": 4
+              },
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/admin/preview-policy.mjs",
+                "startLine": 1,
+                "endLine": 4
+              }
+            ],
+            "canonicalSpanCoverage": [
+              {
+                "spanIndex": 0,
+                "path": "fixtures/discovery-v2/src/admin/preview-policy.mjs",
+                "startLine": 1,
+                "endLine": 4,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 1,
+                "path": "fixtures/discovery-v2/src/routing/route-request.mjs",
+                "startLine": 1,
+                "endLine": 4,
+                "overlaps": true
+              }
+            ]
+          },
+          "evidenceReview": {
+            "questionId": "T3",
+            "factId": "directCallSites",
+            "rubricVersion": 2,
+            "status": "UNRESOLVED",
+            "requiresAdjudication": true,
+            "reasonCodes": [
+              "reviewer_disagreement"
+            ],
+            "reviewerA": {
+              "reviewerLabel": "A",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": false,
+              "decision": "UNSUPPORTED"
+            },
+            "reviewerB": {
+              "reviewerLabel": "B",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": true,
+              "decision": "UNSUPPORTED"
+            }
+          }
+        },
+        {
+          "id": "lookalike",
+          "outcome": "correct",
+          "citation": {
+            "status": "valid",
+            "citations": [
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs",
+                "startLine": 1,
+                "endLine": 5
+              }
+            ],
+            "canonicalSpanCoverage": [
+              {
+                "spanIndex": 0,
+                "path": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs",
+                "startLine": 1,
+                "endLine": 6,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 1,
+                "path": "fixtures/discovery-v2/tasks/trace.md",
+                "startLine": 8,
+                "endLine": 17,
+                "overlaps": false
+              }
+            ]
+          },
+          "evidenceReview": {
+            "questionId": "T3",
+            "factId": "lookalike",
+            "rubricVersion": 2,
+            "status": "UNSUPPORTED",
+            "requiresAdjudication": false,
+            "reasonCodes": [],
+            "reviewerA": {
+              "reviewerLabel": "A",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": false,
+              "decision": "UNSUPPORTED"
+            },
+            "reviewerB": {
+              "reviewerLabel": "B",
+              "citationsEntailClaim": false,
+              "branchCoverageComplete": false,
+              "decision": "UNSUPPORTED"
+            }
+          }
+        },
+        {
+          "id": "override",
+          "outcome": "correct",
+          "citation": {
+            "status": "valid",
+            "citations": [
+              {
+                "status": "valid",
+                "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+                "startLine": 3,
+                "endLine": 9
+              }
+            ],
+            "canonicalSpanCoverage": [
+              {
+                "spanIndex": 0,
+                "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+                "startLine": 3,
+                "endLine": 9,
+                "overlaps": true
+              },
+              {
+                "spanIndex": 1,
+                "path": "fixtures/discovery-v2/src/admin/preview-policy.mjs",
+                "startLine": 3,
+                "endLine": 4,
+                "overlaps": false
+              }
+            ]
+          },
+          "evidenceReview": {
+            "questionId": "T3",
+            "factId": "override",
+            "rubricVersion": 2,
+            "status": "SUPPORTED",
+            "requiresAdjudication": false,
+            "reasonCodes": [],
+            "reviewerA": {
+              "reviewerLabel": "A",
+              "citationsEntailClaim": true,
+              "branchCoverageComplete": true,
+              "decision": "SUPPORTED"
+            },
+            "reviewerB": {
+              "reviewerLabel": "B",
+              "citationsEntailClaim": true,
+              "branchCoverageComplete": true,
+              "decision": "SUPPORTED"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "additionalClaims": [
+    {
+      "questionId": "T1",
+      "id": "T1-C01",
+      "text": "parsing and route selection are in separate modules.",
+      "citations": [
+        {
+          "status": "valid",
+          "path": "fixtures/discovery-v2/src/input/parse-request.mjs",
+          "startLine": 1,
+          "endLine": 15
+        },
+        {
+          "status": "valid",
+          "path": "fixtures/discovery-v2/src/routing/route-request.mjs",
+          "startLine": 3,
+          "endLine": 11
+        }
+      ],
+      "review": {
+        "status": "SUPPORTED",
+        "requiresAdjudication": false,
+        "reviewerA": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        },
+        "reviewerB": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        }
+      }
+    },
+    {
+      "questionId": "T1",
+      "id": "T1-C02",
+      "text": "parses the request",
+      "citations": [
+        {
+          "status": "valid",
+          "path": "fixtures/discovery-v2/src/input/parse-request.mjs",
+          "startLine": 1,
+          "endLine": 15
+        }
+      ],
+      "review": {
+        "status": "SUPPORTED",
+        "requiresAdjudication": false,
+        "reviewerA": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        },
+        "reviewerB": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        }
+      }
+    },
+    {
+      "questionId": "T1",
+      "id": "T1-C03",
+      "text": "normalizes strict mode",
+      "citations": [
+        {
+          "status": "valid",
+          "path": "fixtures/discovery-v2/src/input/parse-request.mjs",
+          "startLine": 1,
+          "endLine": 15
+        }
+      ],
+      "review": {
+        "status": "SUPPORTED",
+        "requiresAdjudication": false,
+        "reviewerA": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        },
+        "reviewerB": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        }
+      }
+    },
+    {
+      "questionId": "T3",
+      "id": "T3-C01",
+      "text": "the legacy resolver is a separate implementation.",
+      "citations": [
+        {
+          "status": "valid",
+          "path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+          "startLine": 3,
+          "endLine": 9
+        },
+        {
+          "status": "valid",
+          "path": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs",
+          "startLine": 1,
+          "endLine": 5
+        }
+      ],
+      "review": {
+        "status": "SUPPORTED",
+        "requiresAdjudication": false,
+        "reviewerA": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        },
+        "reviewerB": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        }
+      }
+    },
+    {
+      "questionId": "T3",
+      "id": "T3-C02",
+      "text": "calls the public entry, not the policy resolver directly.",
+      "citations": [
+        {
+          "status": "valid",
+          "path": "fixtures/discovery-v2/src/batch/inspect-batch.mjs",
+          "startLine": 1,
+          "endLine": 5
+        }
+      ],
+      "review": {
+        "status": "SUPPORTED",
+        "requiresAdjudication": false,
+        "reviewerA": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        },
+        "reviewerB": {
+          "claimAtomic": true,
+          "sourceScopeComplete": true,
+          "reviewCompleted": true,
+          "evidenceDisposition": "supported",
+          "decision": "SUPPORTED"
+        }
+      }
+    }
+  ]
+}

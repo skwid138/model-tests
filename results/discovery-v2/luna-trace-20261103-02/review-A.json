@@ -1,0 +1,42 @@
+{
+  "reviewMetadata": {
+    "caseId": "trace",
+    "reviewer": "A",
+    "ticketDetected": "none (branch did not match pattern)"
+  },
+  "evidenceReviews": [
+    {"questionId": "T1", "factId": "entry", "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T1", "factId": "firstCall", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T2", "factId": "executionPath", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T2", "factId": "decision", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T3", "factId": "directCallSites", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T3", "factId": "lookalike", "reviewerA": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T3", "factId": "override", "reviewerA": {"citationsEntailClaim": true, "branchCoverageComplete": true}}
+  ],
+  "claimReviews": [
+    {"questionId": "T1", "claimId": "T1-C01", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C02", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C03", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C01", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C02", "reviewerA": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}}
+  ],
+  "reviewerAJustifications": [
+    {"kind": "fact", "questionId": "T1", "factId": "entry", "justification": "The cited index.mjs:4-5 declares exported inspectRequest and shows its body."},
+    {"kind": "fact", "questionId": "T1", "factId": "firstCall", "justification": "The cited parse-request.mjs:1-15 defines parseRequest, but does not show inspectRequest invoking it first; the entry call site is not linked to this fact."},
+    {"kind": "fact", "questionId": "T2", "factId": "executionPath", "justification": "The citations show the function bodies and default, but omit index.mjs:1-2 and route-request.mjs:1, which connect the called symbols to the claimed modules and active resolver."},
+    {"kind": "fact", "questionId": "T2", "factId": "decision", "justification": "The route and default values appear in the cited ranges, but route-request.mjs:3-11 does not establish which same-named resolvePolicy implementation is imported; the active import at line 1 is outside the cited range."},
+    {"kind": "fact", "questionId": "T3", "factId": "directCallSites", "justification": "The cited ranges support the two named direct calls, but do not establish that these are every call site within the complete allowlist."},
+    {"kind": "fact", "questionId": "T3", "factId": "lookalike", "justification": "The cited legacy file shows a same-named export, but does not establish that it is outside the active call path."},
+    {"kind": "fact", "questionId": "T3", "factId": "override", "justification": "resolve-policy.mjs:3-9 shows the safe-integer and inclusive lower-bound checks, replacement versus default fallback, and returned maxTerms value."},
+    {"kind": "claim", "questionId": "T1", "claimId": "T1-C01", "justification": "The cited parse-request and route-request ranges show parsing and routing in distinct source modules."},
+    {"kind": "claim", "questionId": "T1", "claimId": "T1-C02", "justification": "The cited parse-request.mjs range shows the request record, query, and mode being read and transformed."},
+    {"kind": "claim", "questionId": "T1", "claimId": "T1-C03", "justification": "The cited parse-request.mjs range shows mode trimmed, lowercased, and mapped to strict or standard."},
+    {"kind": "claim", "questionId": "T3", "claimId": "T3-C01", "justification": "The cited policy and legacy files show distinct resolvePolicy implementations in separate modules."},
+    {"kind": "claim", "questionId": "T3", "claimId": "T3-C02", "justification": "The cited inspect-batch.mjs:1-5 imports and calls inspectRequest from the public entry, with no direct policy-resolver import or call in that module."}
+  ],
+  "caseComments": {
+    "overall": "Evidence-only review of the trace case. The entry and override citations directly support their facts. The first-call, execution-path, decision, direct-call-site completeness, and lookalike path claims are not fully established by their fact-linked ranges; ranges from other facts were not used to fill those gaps.",
+    "scope": "The complete eight-file source allowlist in fixtures/discovery-v2/tasks/trace.md was reviewed for the additional-claim scope checks."
+  },
+  "normalizationAmbiguity": "The full response.md was read. Its citations use literal ${TRIAL_ROOT} prefixes rather than expanded absolute trial-root paths; submission.json resultsText repeats those prefixes. This is recorded without expanding or repairing them and did not change the evidence checklists."
+}

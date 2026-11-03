@@ -1,0 +1,41 @@
+{
+  "caseId": "trace",
+  "evidenceReviews": [
+    {"questionId": "T1", "factId": "entry", "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T1", "factId": "firstCall", "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": true}},
+    {"questionId": "T2", "factId": "executionPath", "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T2", "factId": "decision", "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}},
+    {"questionId": "T3", "factId": "directCallSites", "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": true}},
+    {"questionId": "T3", "factId": "lookalike", "reviewerB": {"citationsEntailClaim": false, "branchCoverageComplete": false}},
+    {"questionId": "T3", "factId": "override", "reviewerB": {"citationsEntailClaim": true, "branchCoverageComplete": true}}
+  ],
+  "claimReviews": [
+    {"questionId": "T1", "claimId": "T1-C01", "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C02", "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T1", "claimId": "T1-C03", "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C01", "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}},
+    {"questionId": "T3", "claimId": "T3-C02", "reviewerB": {"claimAtomic": true, "sourceScopeComplete": true, "reviewCompleted": true, "evidenceDisposition": "supported"}}
+  ],
+  "justifications": {
+    "facts": [
+      {"questionId": "T1", "factId": "entry", "reviewerB": "The cited index.mjs lines export inspectRequest. No relevant conditional branch is omitted."},
+      {"questionId": "T1", "factId": "firstCall", "reviewerB": "The cited parse-request.mjs range establishes that parseRequest exists, but does not show the entry's call expression or its evaluation order. The missing call-site evidence is not a branch-coverage issue."},
+      {"questionId": "T2", "factId": "executionPath", "reviewerB": "The cited ranges show the ordered entry-to-parser-to-router-to-resolver flow and the resolver's defaults import and lookup; the relevant strict/no-override conditions are included."},
+      {"questionId": "T2", "factId": "decision", "reviewerB": "The cited ranges show the strict-mode guarded route, the default-selection path, and the strict default value of 2."},
+      {"questionId": "T3", "factId": "directCallSites", "reviewerB": "The two cited ranges prove direct calls in routeRequest and previewPolicy, but do not establish that these are every direct call site in the allowlist. No conditional branch is at issue in the cited call-site declarations."},
+      {"questionId": "T3", "factId": "lookalike", "reviewerB": "The legacy range proves a same-named implementation exists, but does not establish that it is outside the active static call path; the relevant call-path evidence is absent from this fact's cited ranges."},
+      {"questionId": "T3", "factId": "override", "reviewerB": "The cited resolver lines show the safe-integer and nonnegative checks, assignment of a valid override to maxTerms, and fallback to the mode default otherwise."}
+    ],
+    "claims": [
+      {"questionId": "T1", "claimId": "T1-C01", "reviewerB": "The cited parser and router ranges locate parsing and route selection in separate source modules."},
+      {"questionId": "T1", "claimId": "T1-C02", "reviewerB": "The cited parser range shows request fields being read and transformed into tokens and mode."},
+      {"questionId": "T1", "claimId": "T1-C03", "reviewerB": "The cited parser range shows strict-mode recognition and normalization."},
+      {"questionId": "T3", "claimId": "T3-C01", "reviewerB": "The cited active and legacy resolver ranges show distinct implementations in separate files."},
+      {"questionId": "T3", "claimId": "T3-C02", "reviewerB": "The complete cited inspect-batch.mjs range imports and calls inspectRequest, not resolvePolicy."}
+    ]
+  },
+  "overallComments": [
+    "I checked the complete eight-file source allowlist. Claim source-scope checks are complete for this snapshot.",
+    "Normalization ambiguity: response.md uses the literal ${TRIAL_ROOT} prefix in its citations, while trace.md requires full absolute trial-root paths. I did not replace or infer that prefix. The source-support reviews above use the submitted structural paths and line ranges."
+  ]
+}
