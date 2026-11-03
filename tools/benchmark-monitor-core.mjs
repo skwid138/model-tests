@@ -143,7 +143,10 @@ async function fixedPayload(durationSeconds) {
   if (template.split(token).length !== 2) {
     throw new MonitorError('payload_invalid', 'Fixed PowerShell payload has an invalid duration placeholder');
   }
-  return template.replace(token, String(durationSeconds));
+  const payload = template.replace(token, String(durationSeconds));
+  const lineEnding = payload.match(/\r?\n$/)?.[0] ?? '\n';
+  if (payload.endsWith(lineEnding.repeat(2))) return payload;
+  return `${payload}${payload.endsWith(lineEnding) ? lineEnding : lineEnding.repeat(2)}`;
 }
 
 function defaultSpawnSsh(args) {

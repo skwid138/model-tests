@@ -154,7 +154,7 @@ test('builds a fixed SSH command and rejects host aliases that could inject argu
   assert.throws(() => buildSshArgs('peesea; whoami'), { code: 'invalid_arguments' });
 });
 
-test('capture sends only the fixed payload and returns valid sample metadata', async () => {
+test('capture sends a blank-line-terminated fixed payload and returns valid sample metadata', async () => {
   const fake = makeChild({ output: `${JSON.stringify(validSample)}\n` });
   const capture = await collectRemoteSamples({
     host: 'peesea',
@@ -169,6 +169,8 @@ test('capture sends only the fixed payload and returns valid sample metadata', a
   assert.equal(capture.expectedSampleCount, 1);
   assert.equal(capture.receivedSampleCount, 1);
   assert.equal(capture.samples[0].server.pid, 4321);
+  assert.match(fake.script, /^\$durationSeconds = 1$/m);
+  assert.match(fake.script, /\r?\n\r?\n$/);
   assert.match(fake.script, /Win32_PerfFormattedData_PerfOS_Memory/);
   assert.match(fake.script, /CommittedBytes/);
   assert.match(fake.script, /CommitLimit/);
