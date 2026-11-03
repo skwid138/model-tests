@@ -102,3 +102,29 @@ For example, this `toolCalls` fragment records unavailable trace data explicitly
 ```
 
 Before a future trial, verify the actual Legolas role instructions and exact model catalog ID. Operator gates are 180 seconds from submission (including delegation), at least 4096 MiB RAM, and at least 512 MiB free VRAM. The operator must stop on telemetry loss, a resource floor, or cutoff. Do not claim that a helper cancels the agent. Record model/provider/override artifact/quantization/settings, hardware/context values and provenance, relative trial-root mapping, timing, retries, tool count and trace provenance/coverage, instruction status, semantic grades, evidence review references, and telemetry references. Missing values are unknown, not zero. Text measurement patterns reject common path/URI forms but cannot detect every secret; manually sanitize all values. Do not commit session IDs, raw transcripts/reasoning, credentials, endpoints, or machine-local absolute paths into reports.
+
+## Discovery benchmark v2 (future runs)
+
+Discovery v2 is a separate, typed-answer experiment. Its eight source modules under `fixtures/discovery-v2/src/` are byte-identical copies of the v1 source snapshot; task, source, answer-key, and grading versions use v2 paths and version fields. The two worker prompts are `fixtures/discovery-v2/tasks/trace.md` and `fixtures/discovery-v2/tasks/boundaries.md`. Each shows all three progressive questions in one session. Do not mix v1 records with v2 results or change v1 artifacts.
+
+The worker receives only one selected v2 task and its listed source files. Coordinator-only answer keys, schemas, examples, normalizer, rubric, verifier, and tests are under `grading/discovery-v2/`; never provide them to the worker. Before a future run, get separate run approval, use a frozen baseline and fresh worktrees, verify the real Legolas role instructions/tool permissions and exact model override, then run exactly two fresh foreground Legolas sessions per profile: one TRACE and one BOUNDARY. No v2 model run is authorized by maintainer implementation work.
+
+Run the focused, dependency-free v2 checks from the repository root:
+
+```sh
+node --test fixtures/discovery-v2/test/snapshot.test.mjs fixtures/discovery-v2/test/source-grounding.test.mjs
+node --test grading/discovery-v2/test/extraction.test.mjs grading/discovery-v2/test/normalization.test.mjs grading/discovery-v2/test/grading.test.mjs grading/discovery-v2/test/citations-reviews.test.mjs grading/discovery-v2/test/manifest.test.mjs grading/discovery-v2/test/contracts.test.mjs grading/discovery-v2/test/verification-flow.test.mjs
+```
+
+Coordinator workflow:
+
+```sh
+node grading/discovery-v2/normalize.mjs <trial-root> <trace|boundary> <worker-response-file>
+node grading/discovery-v2/verify.mjs <trial-root> <trace|boundary> <submission.json> <manifest.json>
+```
+
+`normalize.mjs` prints a coordinator-editable skeleton to stdout. It keeps the exact public `<results>` envelope, excludes `<analysis>`, and only replaces the explicitly supplied trial-root prefix with `${TRIAL_ROOT}`. The coordinator must faithfully transcribe prose, associate citations, retain every additional claim, and record independent reviews. Missing or ambiguous normalization pauses for user adjudication. The JSON Schema documents are normative format references; the dependency-free CLI runs focused boundary and consistency validators, not a general JSON Schema engine.
+
+Typed fact outcomes, citation location, canonical-span overlap, and A/B evidence review are separate fields. Broad in-bounds citations remain valid; canonical-span overlap is descriptive and never semantic credit. Additional claims remain verbatim with cited ranges. They count unsupported only when both independent reviewers agree on the same completed disposition: lack of support within the complete finite source scope, or direct contradiction. Incomplete scope and disagreeing dispositions stay unresolved. The protocol is `FAIL` for an observed instruction or operator-gate violation, `PASS` only with instruction PASS, operator-gate PASS supported by observed preflight hardware and observed elapsed time within the limit, an available complete trace, nonempty coverage references, and known trace-source provenance, and otherwise `UNKNOWN`. A gate status of PASS requires relative evidence references; missing gate measurements remain UNKNOWN. The CLI cross-checks manifest task/source/key hashes against the trial-root copies and requires its A/B review records to match submission reviews. Unknown role/provider artifact hashes remain unknown and do not prove identity. The validator checks recorded consistency, not trace authenticity, evidence authenticity, or the full manifest schema.
+
+Unknown measurements use `null` with provenance `unknown`; do not fill unknown timing, retries, model settings, hardware, or historical role hashes with zero or guesses. Artifact references are relative to the trial root. Before publishing, manually inspect every field name and value for credentials, bearer tokens, private keys, endpoint URLs/user-info, session identifiers, and machine-local paths. Pattern checks are incomplete and do not redact output. If a sensitive value appears, pause publication and resolve it with a human; do not silently rewrite the response. Operator limits remain 180 seconds from submission including delegation, at least 4096 MiB preflight RAM and 512 MiB preflight free VRAM, and stop on telemetry loss, a resource floor, or cutoff. Record the gate outcome, stop reason, and relative evidence refs; a measured floor/time violation is `FAIL`, an unknown gate is `UNKNOWN`, and a compliant stop can leave protocol `UNKNOWN` if the complete trace is unavailable. Cloud telemetry may be marked not applicable only with explicit approval. The capture-only monitor is not a model runner; no remote teardown or cancellation guarantee is claimed.

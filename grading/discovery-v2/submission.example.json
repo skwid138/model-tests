@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 2,
+  "caseId": "trace",
+  "taskVersion": 2,
+  "sourceVersion": 2,
+  "resultsText": "<results><files></files><answer></answer><next_steps></next_steps></results>",
+  "typedFragment": {"status": "missing"},
+  "answers": {
+    "T1": {
+      "prose": "<faithful transcription; do not rewrite>",
+      "citations": [],
+      "additionalClaims": []
+    },
+    "T2": {"prose": "", "citations": [], "additionalClaims": []},
+    "T3": {"prose": "", "citations": [], "additionalClaims": []}
+  },
+  "evidenceReviews": [],
+  "claimReviews": []
+}

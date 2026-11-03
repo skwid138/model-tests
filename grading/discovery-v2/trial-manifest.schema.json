@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:model-tests:discovery-v2:trial-manifest:v2",
+  "title": "Discovery Benchmark v2 coordinator trial manifest",
+  "description": "Coordinator-only record. Focused Node validators enforce protocol consistency and privacy-sensitive reference rules; they do not authenticate traces or validate every JSON Schema constraint.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "taskVersion", "sourceVersion", "model", "hardware", "timing", "toolCalls", "instructions", "telemetry", "operatorGates", "fixtureHashes", "evidenceReviews", "claimReviews", "artifactRefs", "protocolStatus"],
+  "properties": {
+    "schemaVersion": {"const": 2},
+    "caseId": {"enum": ["trace", "boundary"]},
+    "taskVersion": {"const": 2},
+    "sourceVersion": {"const": 2},
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provider", "modelId", "rolePromptRef", "settingsRef", "roleBaselineSha256", "providerArtifactSha256"],
+      "properties": {
+        "provider": {"$ref": "#/$defs/measurement"},
+        "modelId": {"$ref": "#/$defs/measurement"},
+        "rolePromptRef": {"$ref": "#/$defs/measurement"},
+        "settingsRef": {"$ref": "#/$defs/measurement"},
+        "roleBaselineSha256": {"$ref": "#/$defs/measurement"},
+        "providerArtifactSha256": {"$ref": "#/$defs/measurement"}
+      }
+    },
+    "hardware": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ramMiB", "freeVramMiB"],
+      "properties": {
+        "ramMiB": {"allOf": [{"$ref": "#/$defs/measurement"}], "description": "Observed preflight system RAM in MiB."},
+        "freeVramMiB": {"allOf": [{"$ref": "#/$defs/measurement"}], "description": "Observed preflight free VRAM in MiB."}
+      }
+    },
+    "timing": {
+      "type": "object", "additionalProperties": false,
+      "required": ["submittedAtUtc", "elapsedSeconds", "retries"],
+      "properties": {
+        "submittedAtUtc": {"$ref": "#/$defs/measurement"},
+        "elapsedSeconds": {"allOf": [{"$ref": "#/$defs/measurement"}], "description": "Elapsed time from submission, including delegation."},
+        "retries": {"$ref": "#/$defs/measurement"}
+      }
+    },
+    "toolCalls": {
+      "type": "object", "additionalProperties": false,
+      "required": ["count", "traceStatus", "traceSource", "coverage", "coverageRefs"],
+      "properties": {
+        "count": {"$ref": "#/$defs/measurement"},
+        "traceStatus": {"enum": ["available", "unavailable", "incomplete"]},
+        "traceSource": {"$ref": "#/$defs/measurement"},
+        "coverage": {"enum": ["complete", "incomplete", "unknown"]},
+        "coverageRefs": {"type": "array", "items": {"$ref": "#/$defs/relativeArtifactRef"}}
+      }
+    },
+    "instructions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "evidenceRefs"],
+      "properties": {"status": {"enum": ["PASS", "FAIL", "UNKNOWN"]}, "evidenceRefs": {"type": "array", "items": {"$ref": "#/$defs/relativeArtifactRef"}}}
+    },
+    "telemetry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "cloudNotApplicableApproved", "provenance", "artifactRefs"],
+      "properties": {
+        "status": {"enum": ["captured", "not_collected", "not_applicable_explicitly_approved"]},
+        "cloudNotApplicableApproved": {"type": "boolean"},
+        "provenance": {"enum": ["observed", "declared", "operator_reported", "unknown"]},
+        "artifactRefs": {"type": "array", "items": {"$ref": "#/$defs/relativeArtifactRef"}}
+      }
+    },
+    "operatorGates": {
+      "type": "object", "additionalProperties": false,
+      "required": ["timeLimitSeconds", "minimumRamMiB", "minimumFreeVramMiB", "status", "stopReason", "evidenceRefs"],
+      "properties": {
+        "timeLimitSeconds": {"const": 180},
+        "minimumRamMiB": {"const": 4096},
+        "minimumFreeVramMiB": {"const": 512},
+        "status": {"enum": ["PASS", "FAIL", "UNKNOWN"]},
+        "stopReason": {"enum": ["none", "telemetry_loss", "ram_floor", "free_vram_floor", "time_limit", "preflight_floor_violation", "not_stopped_on_floor", "not_stopped_on_telemetry_loss", "exceeded_time_limit", "other_violation", "unknown"]},
+        "evidenceRefs": {"type": "array", "items": {"$ref": "#/$defs/relativeArtifactRef"}}
+      },
+      "description": "PASS requires observed preflight floors and measured elapsed time within the limit. FAIL records a known gate violation. UNKNOWN preserves insufficient evidence. Stop reason and evidence references are separate fields."
+    },
+    "fixtureHashes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["taskPath", "taskSha256", "sourceFilesSha256", "answerKeyPath", "answerFileSha256"],
+      "properties": {
+        "taskPath": {"$ref": "#/$defs/relativeArtifactRef"},
+        "taskSha256": {"$ref": "#/$defs/sha256"},
+        "sourceFilesSha256": {
+          "type": "object", "minProperties": 8, "maxProperties": 8,
+          "propertyNames": {"pattern": "^fixtures/discovery-v2/src/.+\\.mjs$"},
+          "additionalProperties": {"$ref": "#/$defs/sha256"}
+        },
+        "answerKeyPath": {"$ref": "#/$defs/relativeArtifactRef"},
+        "answerFileSha256": {"$ref": "#/$defs/sha256"}
+      },
+      "description": "The coordinator verifies these task, source, and answer-key identities against the explicit trial root before grading."
+    },
+    "evidenceReviews": {"type": "array", "items": {"$ref": "#/$defs/evidenceReview"}},
+    "claimReviews": {"type": "array", "items": {"$ref": "#/$defs/claimReview"}},
+    "artifactRefs": {"type": "array", "items": {"$ref": "#/$defs/relativeArtifactRef"}},
+    "protocolStatus": {"enum": ["PASS", "FAIL", "UNKNOWN"]}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "measurement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["value", "provenance"],
+      "properties": {
+        "value": {"type": ["string", "number", "boolean", "null"]},
+        "provenance": {"enum": ["observed", "declared", "operator_reported", "unknown"]}
+      },
+      "description": "Unknown values are null with provenance unknown. A numeric zero is a measured value, not a stand-in for unknown."
+    },
+    "relativeArtifactRef": {
+      "type": "string", "minLength": 1,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*://).+$",
+      "description": "A relative path beneath the trial root; no traversal, URI, absolute path, credential, endpoint, or session identifier."
+    },
+    "evidenceChecklist": {
+      "type": "object", "additionalProperties": false,
+      "required": ["citationsEntailClaim", "branchCoverageComplete"],
+      "properties": {"citationsEntailClaim": {"type": "boolean"}, "branchCoverageComplete": {"type": "boolean"}}
+    },
+    "evidenceReview": {
+      "type": "object", "additionalProperties": false,
+      "required": ["questionId", "factId"],
+      "properties": {
+        "questionId": {"type": "string", "pattern": "^[TB][1-3]$"},
+        "factId": {"type": "string", "minLength": 1},
+        "reviewerA": {"$ref": "#/$defs/evidenceChecklist"},
+        "reviewerB": {"$ref": "#/$defs/evidenceChecklist"}
+      }
+    },
+    "claimChecklist": {
+      "type": "object", "additionalProperties": false,
+      "required": ["claimAtomic", "sourceScopeComplete", "reviewCompleted", "evidenceDisposition"],
+      "properties": {
+        "claimAtomic": {"type": "boolean"},
+        "sourceScopeComplete": {"type": "boolean"},
+        "reviewCompleted": {"type": "boolean"},
+        "evidenceDisposition": {"enum": ["supported", "unsupported_established", "contradicted", "not_reviewed"]}
+      }
+    },
+    "claimReview": {
+      "type": "object", "additionalProperties": false,
+      "required": ["questionId", "claimId"],
+      "properties": {
+        "questionId": {"type": "string", "pattern": "^[TB][1-3]$"},
+        "claimId": {"type": "string", "pattern": "^[TB][1-3]-C[0-9]{2,}$"},
+        "reviewerA": {"$ref": "#/$defs/claimChecklist"},
+        "reviewerB": {"$ref": "#/$defs/claimChecklist"}
+      }
+    }
+  }
+}

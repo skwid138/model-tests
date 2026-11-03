@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 2,
+  "caseId": "trace",
+  "taskVersion": 2,
+  "sourceVersion": 2,
+  "taskPath": "fixtures/discovery-v2/tasks/trace.md",
+  "taskSha256": "39abf3fb2ca1545605b1b32e1d55cf35a9465f191ba372c5d9e04d6b07b9b261",
+  "sourceFilesSha256": {
+    "fixtures/discovery-v2/src/admin/preview-policy.mjs": "75f4908f84e58846721349f9a941d7f469ad9fd70a34b4311914b44267ff82ae",
+    "fixtures/discovery-v2/src/batch/inspect-batch.mjs": "7702ca7f13a9d7701cd9e74dd06a9e33313f56585343af42ad9d103e6808941c",
+    "fixtures/discovery-v2/src/index.mjs": "943332aa3349d7dd911c1c46c7a9b4a5d287c0cb8a8c59b28fe2f862503318fb",
+    "fixtures/discovery-v2/src/input/parse-request.mjs": "793d3b178ac1905a7f8995440ea5932f6611e755a7b14d1e5e3c906b69659053",
+    "fixtures/discovery-v2/src/legacy/resolve-policy.mjs": "33b6019cf4d381cdd137a7d320027d1ae5fede2e974f2f5b56e5fc91ad9cf409",
+    "fixtures/discovery-v2/src/policy/defaults.mjs": "adbad648824d3d63893fd717f5a4249e84d81774e66741bfdf72bb621e75a4e3",
+    "fixtures/discovery-v2/src/policy/resolve-policy.mjs": "299ee278269309de1dcfe8438a5b1545c5d10cde6852d08e8f3499399aee5914",
+    "fixtures/discovery-v2/src/routing/route-request.mjs": "bbaefc350d194c2af46de7b5fca22de39042a415399160cf92b811729edb91ac"
+  },
+  "questions": [
+    {
+      "id": "T1",
+      "tier": "easy",
+      "facts": [
+        {
+          "id": "entry",
+          "path": ["T1", "entry"],
+          "expected": {"file": "fixtures/discovery-v2/src/index.mjs", "symbol": "inspectRequest"},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5}
+          ]
+        },
+        {
+          "id": "firstCall",
+          "path": ["T1", "firstCall"],
+          "expected": {"file": "fixtures/discovery-v2/src/input/parse-request.mjs", "symbol": "parseRequest"},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "tier": "medium",
+      "facts": [
+        {
+          "id": "executionPath",
+          "path": ["T2", "executionPath"],
+          "expected": [
+            "fixtures/discovery-v2/src/index.mjs",
+            "fixtures/discovery-v2/src/input/parse-request.mjs",
+            "fixtures/discovery-v2/src/routing/route-request.mjs",
+            "fixtures/discovery-v2/src/policy/resolve-policy.mjs",
+            "fixtures/discovery-v2/src/policy/defaults.mjs"
+          ],
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/index.mjs", "startLine": 1, "endLine": 5},
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 8, "endLine": 15},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 1, "endLine": 11},
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 1, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+          ]
+        },
+        {
+          "id": "decision",
+          "path": ["T2", "decision"],
+          "expected": {"route": "guarded", "budget": 2},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 7, "endLine": 11},
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "tier": "hard",
+      "facts": [
+        {
+          "id": "directCallSites",
+          "path": ["T3", "directCallSites"],
+          "expected": [
+            {"file": "fixtures/discovery-v2/src/admin/preview-policy.mjs", "containingFunction": "previewPolicy"},
+            {"file": "fixtures/discovery-v2/src/routing/route-request.mjs", "containingFunction": "routeRequest"}
+          ],
+          "match": "unordered",
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/admin/preview-policy.mjs", "startLine": 1, "endLine": 4},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 1, "endLine": 4}
+          ]
+        },
+        {
+          "id": "lookalike",
+          "path": ["T3", "lookalike"],
+          "expected": {"file": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs", "symbol": "resolvePolicy", "onActiveCallPath": false},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/legacy/resolve-policy.mjs", "startLine": 1, "endLine": 6},
+            {"path": "fixtures/discovery-v2/tasks/trace.md", "startLine": 8, "endLine": 17}
+          ]
+        },
+        {
+          "id": "override",
+          "path": ["T3", "override"],
+          "expected": {
+            "valid": {
+              "constraint": {"isInteger": true, "isSafeInteger": true, "lowerBound": 0, "lowerBoundInclusive": true},
+              "effect": {"action": "replace", "target": "effective_budget"}
+            },
+            "invalid": {"effect": {"action": "fallback", "target": "mode_default"}}
+          },
+          "shape": {
+            "$type": "object",
+            "properties": {
+              "valid": {
+                "$type": "object",
+                "properties": {
+                  "constraint": {
+                    "$type": "object",
+                    "properties": {
+                      "isInteger": {"$type": "boolean"},
+                      "isSafeInteger": {"$type": "boolean"},
+                      "lowerBound": {"$type": "number"},
+                      "lowerBoundInclusive": {"$type": "boolean"}
+                    }
+                  },
+                  "effect": {
+                    "$type": "object",
+                    "properties": {
+                      "action": {"$type": "enum", "values": ["replace", "fallback", "clamp", "add", "multiply", "preserve"]},
+                      "target": {"$type": "enum", "values": ["effective_budget", "mode_default", "configured_limit", "request_limit", "fixed_limit", "existing_value"]}
+                    }
+                  }
+                }
+              },
+              "invalid": {
+                "$type": "object",
+                "properties": {
+                  "effect": {
+                    "$type": "object",
+                    "properties": {
+                      "action": {"$type": "enum", "values": ["replace", "fallback", "clamp", "add", "multiply", "preserve"]},
+                      "target": {"$type": "enum", "values": ["effective_budget", "mode_default", "configured_limit", "request_limit", "fixed_limit", "existing_value"]}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/admin/preview-policy.mjs", "startLine": 3, "endLine": 4}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 2,
+  "caseId": "boundary",
+  "taskVersion": 2,
+  "sourceVersion": 2,
+  "taskPath": "fixtures/discovery-v2/tasks/boundaries.md",
+  "taskSha256": "094487392bbe7ef50e30d0cc6f2e1c6d1b838bee8b73184dcca965c4cb8d41dc",
+  "sourceFilesSha256": {
+    "fixtures/discovery-v2/src/admin/preview-policy.mjs": "75f4908f84e58846721349f9a941d7f469ad9fd70a34b4311914b44267ff82ae",
+    "fixtures/discovery-v2/src/batch/inspect-batch.mjs": "7702ca7f13a9d7701cd9e74dd06a9e33313f56585343af42ad9d103e6808941c",
+    "fixtures/discovery-v2/src/index.mjs": "943332aa3349d7dd911c1c46c7a9b4a5d287c0cb8a8c59b28fe2f862503318fb",
+    "fixtures/discovery-v2/src/input/parse-request.mjs": "793d3b178ac1905a7f8995440ea5932f6611e755a7b14d1e5e3c906b69659053",
+    "fixtures/discovery-v2/src/legacy/resolve-policy.mjs": "33b6019cf4d381cdd137a7d320027d1ae5fede2e974f2f5b56e5fc91ad9cf409",
+    "fixtures/discovery-v2/src/policy/defaults.mjs": "adbad648824d3d63893fd717f5a4249e84d81774e66741bfdf72bb621e75a4e3",
+    "fixtures/discovery-v2/src/policy/resolve-policy.mjs": "299ee278269309de1dcfe8438a5b1545c5d10cde6852d08e8f3499399aee5914",
+    "fixtures/discovery-v2/src/routing/route-request.mjs": "bbaefc350d194c2af46de7b5fca22de39042a415399160cf92b811729edb91ac"
+  },
+  "questions": [
+    {
+      "id": "B1",
+      "tier": "easy",
+      "facts": [
+        {
+          "id": "ordinaryResult",
+          "path": ["B1", "result"],
+          "expected": {"mode": "standard", "route": "open", "tokens": ["amber", "finch"], "budget": 4, "accepted": true},
+          "shape": {"$type": "object", "properties": {"mode": {"$type": "string"}, "route": {"$type": "string"}, "tokens": {"$type": "array", "items": {"$type": "string"}}, "budget": {"$type": "integer"}, "accepted": {"$type": "boolean"}}},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/index.mjs", "startLine": 4, "endLine": 5},
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 1, "endLine": 11},
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 1, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "tier": "medium",
+      "facts": [
+        {
+          "id": "missingInput",
+          "path": ["B2", "missingInput"],
+          "expected": {"mode": "standard", "route": "open", "tokens": [], "budget": 4, "accepted": true},
+          "shape": {"$type": "object", "properties": {"mode": {"$type": "string"}, "route": {"$type": "string"}, "tokens": {"$type": "array", "items": {"$type": "string"}}, "budget": {"$type": "integer"}, "accepted": {"$type": "boolean"}}},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 15},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+          ]
+        },
+        {
+          "id": "blankStrict",
+          "path": ["B2", "blankStrict"],
+          "expected": {"mode": "strict", "route": "guarded", "tokens": [], "budget": 2, "accepted": true},
+          "shape": {"$type": "object", "properties": {"mode": {"$type": "string"}, "route": {"$type": "string"}, "tokens": {"$type": "array", "items": {"$type": "string"}}, "budget": {"$type": "integer"}, "accepted": {"$type": "boolean"}}},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+          ]
+        },
+        {
+          "id": "invalidFields",
+          "path": ["B2", "invalidFields"],
+          "expected": {"mode": "standard", "route": "open", "tokens": [], "budget": 4, "accepted": true},
+          "shape": {"$type": "object", "properties": {"mode": {"$type": "string"}, "route": {"$type": "string"}, "tokens": {"$type": "array", "items": {"$type": "string"}}, "budget": {"$type": "integer"}, "accepted": {"$type": "boolean"}}},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 1, "endLine": 15},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9},
+            {"path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B3",
+      "tier": "hard",
+      "facts": [
+        {
+          "id": "zeroOverrideResult",
+          "path": ["B3", "zeroOverrideResult"],
+          "expected": {"mode": "strict", "route": "guarded", "tokens": [], "budget": 0, "accepted": true},
+          "shape": {"$type": "object", "properties": {"mode": {"$type": "string"}, "route": {"$type": "string"}, "tokens": {"$type": "array", "items": {"$type": "string"}}, "budget": {"$type": "integer"}, "accepted": {"$type": "boolean"}}},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/src/input/parse-request.mjs", "startLine": 5, "endLine": 15},
+            {"path": "fixtures/discovery-v2/src/routing/route-request.mjs", "startLine": 3, "endLine": 11},
+            {"path": "fixtures/discovery-v2/src/policy/resolve-policy.mjs", "startLine": 3, "endLine": 9}
+          ]
+        },
+        {
+          "id": "deploymentLimit",
+          "path": ["B3", "deploymentLimit"],
+          "expected": {"status": "unknown", "value": null, "snapshotLimitation": true},
+          "acceptedOutcome": "abstention",
+          "shape": {"$type": "object", "properties": {"status": {"$type": "enum", "values": ["known", "unknown"]}, "value": {"$type": "union", "anyOf": [{"$type": "number"}, {"$type": "null"}]}, "snapshotLimitation": {"$type": "boolean"}}},
+          "evidence": [
+            {"path": "fixtures/discovery-v2/tasks/boundaries.md", "startLine": 8, "endLine": 8},
+            {"path": "fixtures/discovery-v2/src/policy/defaults.mjs", "startLine": 1, "endLine": 4}
+          ]
+        }
+      ]
+    }
+  ]
+}
