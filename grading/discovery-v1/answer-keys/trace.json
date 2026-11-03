@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "caseId": "trace",
+  "taskVersion": 1,
+  "taskSha256": "5efc704696e47d57616e196014ec8d2063d41e5806abe52087f697af8cc0660f",
+  "sourceFilesSha256": {
+    "fixtures/discovery-v1/src/index.mjs": "943332aa3349d7dd911c1c46c7a9b4a5d287c0cb8a8c59b28fe2f862503318fb",
+    "fixtures/discovery-v1/src/input/parse-request.mjs": "793d3b178ac1905a7f8995440ea5932f6611e755a7b14d1e5e3c906b69659053",
+    "fixtures/discovery-v1/src/routing/route-request.mjs": "bbaefc350d194c2af46de7b5fca22de39042a415399160cf92b811729edb91ac",
+    "fixtures/discovery-v1/src/policy/resolve-policy.mjs": "299ee278269309de1dcfe8438a5b1545c5d10cde6852d08e8f3499399aee5914",
+    "fixtures/discovery-v1/src/policy/defaults.mjs": "adbad648824d3d63893fd717f5a4249e84d81774e66741bfdf72bb621e75a4e3",
+    "fixtures/discovery-v1/src/batch/inspect-batch.mjs": "7702ca7f13a9d7701cd9e74dd06a9e33313f56585343af42ad9d103e6808941c",
+    "fixtures/discovery-v1/src/admin/preview-policy.mjs": "75f4908f84e58846721349f9a941d7f469ad9fd70a34b4311914b44267ff82ae",
+    "fixtures/discovery-v1/src/legacy/resolve-policy.mjs": "33b6019cf4d381cdd137a7d320027d1ae5fede2e974f2f5b56e5fc91ad9cf409"
+  },
+  "questions": [
+    {
+      "id": "T1",
+      "tier": "easy",
+      "requiredFacts": [
+        {
+          "id": "public_entry",
+          "accepted": [
+            {
+              "file": "fixtures/discovery-v1/src/index.mjs",
+              "symbol": "inspectRequest"
+            }
+          ],
+          "evidence": [
+            {
+              "path": "fixtures/discovery-v1/src/index.mjs",
+              "startLine": 4,
+              "endLine": 6
+            }
+          ]
+        },
+        {
+          "id": "immediate_delegate",
+          "accepted": [
+            {
+              "module": "fixtures/discovery-v1/src/input/parse-request.mjs",
+              "symbol": "parseRequest"
+            }
+          ],
+          "evidence": [
+            {
+              "path": "fixtures/discovery-v1/src/index.mjs",
+              "startLine": 1,
+              "endLine": 5
+            },
+            {
+              "path": "fixtures/discovery-v1/src/input/parse-request.mjs",
+              "startLine": 1,
+              "endLine": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "tier": "medium",
+      "requiredFacts": [
+        {
+          "id": "strict_execution_path",
+          "accepted": [
+            [
+              "fixtures/discovery-v1/src/index.mjs",
+              "fixtures/discovery-v1/src/input/parse-request.mjs",
+              "fixtures/discovery-v1/src/routing/route-request.mjs",
+              "fixtures/discovery-v1/src/policy/resolve-policy.mjs",
+              "fixtures/discovery-v1/src/policy/defaults.mjs"
+            ]
+          ],
+          "evidence": [
+            {
+              "path": "fixtures/discovery-v1/src/index.mjs",
+              "startLine": 1,
+              "endLine": 5
+            },
+            {
+              "path": "fixtures/discovery-v1/src/input/parse-request.mjs",
+              "startLine": 8,
+              "endLine": 15
+            },
+            {
+              "path": "fixtures/discovery-v1/src/routing/route-request.mjs",
+              "startLine": 1,
+              "endLine": 11
+            },
+            {
+              "path": "fixtures/discovery-v1/src/policy/resolve-policy.mjs",
+              "startLine": 1,
+              "endLine": 9
+            },
+            {
+              "path": "fixtures/discovery-v1/src/policy/defaults.mjs",
+              "startLine": 1,
+              "endLine": 4
+            }
+          ]
+        },
+        {
+          "id": "strict_route_and_budget",
+          "accepted": [
+            {
+              "route": "guarded",
+              "budget": 2
+            }
+          ],
+          "evidence": [
+            {
+              "path": "fixtures/discovery-v1/src/routing/route-request.mjs",
+              "startLine": 7,
+              "endLine": 11
+            },
+            {
+              "path": "fixtures/discovery-v1/src/policy/resolve-policy.mjs",
+              "startLine": 3,
+              "endLine": 9
+            },
+            {
+              "path": "fixtures/discovery-v1/src/policy/defaults.mjs",
+              "startLine": 1,
+              "endLine": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "tier": "hard",
+      "requiredFacts": [
+        {
+          "id": "direct_active_callers",
+          "accepted": [
+            [
+              {
+                "file": "fixtures/discovery-v1/src/admin/preview-policy.mjs",
+                "function": "previewPolicy"
+              },
+              {
+                "file": "fixtures/discovery-v1/src/routing/route-request.mjs",
+                "function": "routeRequest"
+              }
+            ],
+            [
+              {
+                "file": "fixtures/discovery-v1/src/routing/route-request.mjs",
+                "function": "routeRequest"
+              },
+              {
+                "file": "fixtures/discovery-v1/src/admin/preview-policy.mjs",
+                "function": "previewPolicy"
+              }
+            ]
+          ],
+          "evidence": [
+            {
+              "path": "fixtures/discovery-v1/src/routing/route-request.mjs",
+              "startLine": 1,
+              "endLine": 4
+            },
+            {
+              "path": "fixtures/discovery-v1/src/admin/preview-policy.mjs",
+              "startLine": 1,
+              "endLine": 4
+            }
+          ]
+        },
+        {
+          "id": "unused_lookalike",
+          "accepted": [
+            {
+              "module": "fixtures/discovery-v1/src/legacy/resolve-policy.mjs",
+              "symbol": "resolvePolicy",
+              "active_static_call_path": false
+            }
+          ],
+          "evidence": [
+            {
+              "path": "fixtures/discovery-v1/src/legacy/resolve-policy.mjs",
+              "startLine": 1,
+              "endLine": 6
+            },
+            {
+              "path": "fixtures/discovery-v1/tasks/trace.md",
+              "startLine": 8,
+              "endLine": 17
+            }
+          ]
+        },
+        {
+          "id": "override_effect",
+          "accepted": [
+            {
+              "valid_override": "A nonnegative safe integer replaces the mode default exactly.",
+              "invalid_override": "An invalid override falls back to the selected mode default."
+            }
+          ],
+          "evidence": [
+            {
+              "path": "fixtures/discovery-v1/src/policy/resolve-policy.mjs",
+              "startLine": 3,
+              "endLine": 9
+            },
+            {
+              "path": "fixtures/discovery-v1/src/admin/preview-policy.mjs",
+              "startLine": 3,
+              "endLine": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,380 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:model-tests:discovery-v1:trial-manifest:v1",
+  "title": "Discovery benchmark trial manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "trialId",
+    "caseId",
+    "task",
+    "role",
+    "model",
+    "hardware",
+    "context",
+    "trialRoot",
+    "timing",
+    "retries",
+    "toolCalls",
+    "instructions",
+    "protocolStatus",
+    "semanticGrades",
+    "evidenceReviews",
+    "telemetryArtifacts"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "trialId": {
+      "type": "string",
+      "description": "Coordinator-generated relative identifier, never a provider session ID.",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$"
+    },
+    "caseId": { "enum": ["trace", "boundary"] },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskVersion", "promptSha256", "sourceFilesSha256", "goldSha256"],
+      "properties": {
+        "taskVersion": { "const": 1 },
+        "promptSha256": { "$ref": "#/$defs/sha256" },
+        "goldSha256": { "$ref": "#/$defs/sha256" },
+        "sourceFilesSha256": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "pattern": "^fixtures/discovery-v1/src/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$" },
+          "additionalProperties": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "role": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "baselineSha256"],
+      "properties": {
+        "name": { "const": "legolas" },
+        "baselineSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "modelId", "overrideArtifact", "quantization", "settings"],
+      "properties": {
+        "provider": { "$ref": "#/$defs/textMeasurement" },
+        "modelId": { "$ref": "#/$defs/textMeasurement" },
+        "overrideArtifact": { "$ref": "#/$defs/textMeasurement" },
+        "quantization": { "$ref": "#/$defs/textMeasurement" },
+        "settings": {
+          "$ref": "#/$defs/measurement",
+          "properties": {
+            "value": {
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "temperature": { "type": ["number", "null"], "minimum": 0 },
+                    "topP": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+                    "maxOutputTokens": { "type": ["integer", "null"], "minimum": 1 },
+                    "contextWindow": { "type": ["integer", "null"], "minimum": 1 },
+                    "reasoningEffort": {
+                      "type": ["string", "null"],
+                      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?![A-Za-z]:/)(?!.*://)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._+/# :-]{0,159}$"
+                    },
+                    "toolMode": {
+                      "type": ["string", "null"],
+                      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?![A-Za-z]:/)(?!.*://)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._+/# :-]{0,159}$"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "hardware": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpu", "ramMiB", "gpuModel", "totalVramMiB", "freeVramMiB"],
+      "properties": {
+        "cpu": { "$ref": "#/$defs/textMeasurement" },
+        "ramMiB": { "$ref": "#/$defs/nonnegativeIntegerMeasurement" },
+        "gpuModel": { "$ref": "#/$defs/textMeasurement" },
+        "totalVramMiB": { "$ref": "#/$defs/nonnegativeIntegerMeasurement" },
+        "freeVramMiB": { "$ref": "#/$defs/nonnegativeIntegerMeasurement" }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valueTokens"],
+      "properties": {
+        "valueTokens": { "$ref": "#/$defs/nonnegativeIntegerMeasurement" }
+      }
+    },
+    "trialRoot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relativeId", "rootMapping"],
+      "properties": {
+        "relativeId": {
+          "type": "string",
+          "description": "Coordinator-generated relative identifier, never a session ID.",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$"
+        },
+        "rootMapping": { "$ref": "#/$defs/relativeTextMeasurement" }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["submittedAtUtc", "startedAtUtc", "completedAtUtc", "durationMs"],
+      "properties": {
+        "submittedAtUtc": { "$ref": "#/$defs/textMeasurement" },
+        "startedAtUtc": { "$ref": "#/$defs/textMeasurement" },
+        "completedAtUtc": { "$ref": "#/$defs/textMeasurement" },
+        "durationMs": { "$ref": "#/$defs/nonnegativeIntegerMeasurement" }
+      }
+    },
+    "retries": { "$ref": "#/$defs/nonnegativeIntegerMeasurement" },
+    "toolCalls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "traceStatus", "traceSource", "coverage", "coverageRefs"],
+      "properties": {
+        "count": { "$ref": "#/$defs/nonnegativeIntegerMeasurement" },
+        "traceStatus": { "enum": ["available", "unavailable", "unknown"] },
+        "traceSource": { "$ref": "#/$defs/textMeasurement" },
+        "coverage": { "enum": ["complete", "partial", "unavailable", "unknown"] },
+        "coverageRefs": { "type": "array", "items": { "$ref": "#/$defs/relativeArtifactPath" } }
+      }
+    },
+    "instructions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "evidenceRefs"],
+      "properties": {
+        "status": { "enum": ["PASS", "FAIL", "UNKNOWN"] },
+        "evidenceRefs": { "type": "array", "items": { "$ref": "#/$defs/relativeArtifactPath" } }
+      }
+    },
+    "protocolStatus": {
+      "description": "PASS requires complete known trace evidence and instructions PASS; FAIL requires an observed instruction violation; otherwise insufficient evidence is UNKNOWN.",
+      "enum": ["PASS", "FAIL", "UNKNOWN"]
+    },
+    "semanticGrades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["questionId", "tier", "correct", "denominator", "unsupported", "facts"],
+        "properties": {
+          "questionId": { "type": "string", "pattern": "^[TB][1-3]$" },
+          "tier": { "enum": ["easy", "medium", "hard"] },
+          "correct": { "type": "integer", "minimum": 0 },
+          "denominator": { "type": "integer", "minimum": 1 },
+          "unsupported": { "type": "integer", "minimum": 0 },
+          "facts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["factId", "outcome", "citationLocation"],
+              "properties": {
+                "factId": { "type": "string" },
+                "outcome": { "enum": ["correct", "missing", "abstention", "incorrect", "unsupported"] },
+                "citationLocation": {
+                  "enum": ["valid_location", "incomplete", "misleading", "invalid_path", "missing"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "evidenceReviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["questionId", "factId", "rubricVersion", "status", "requiresAdjudication", "reasonCodes", "reviewerA", "reviewerB"],
+        "properties": {
+          "questionId": { "type": "string", "pattern": "^[TB][1-3]$" },
+          "factId": { "type": "string" },
+          "rubricVersion": { "const": 1 },
+          "status": { "enum": ["SUPPORTED", "UNSUPPORTED", "UNRESOLVED"] },
+          "requiresAdjudication": { "type": "boolean" },
+          "reasonCodes": {
+            "type": "array",
+            "items": { "enum": ["review_missing", "review_input_invalid", "reviewer_disagreement"] }
+          },
+          "reviewerA": {
+            "allOf": [
+              { "$ref": "#/$defs/reviewDecision" },
+              { "properties": { "reviewerLabel": { "const": "A" } } }
+            ]
+          },
+          "reviewerB": {
+            "allOf": [
+              { "$ref": "#/$defs/reviewDecision" },
+              { "properties": { "reviewerLabel": { "const": "B" } } }
+            ]
+          }
+        }
+      }
+    },
+    "telemetryArtifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path"],
+        "properties": {
+          "kind": { "enum": ["capture_manifest", "samples"] },
+          "path": { "$ref": "#/$defs/relativeArtifactPath" }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "protocolStatus": { "const": "PASS" } },
+        "required": ["protocolStatus"]
+      },
+      "then": {
+        "properties": {
+          "instructions": { "properties": { "status": { "const": "PASS" } }, "required": ["status"] },
+          "toolCalls": { "$ref": "#/$defs/completeTraceEvidence" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "protocolStatus": { "const": "FAIL" } },
+        "required": ["protocolStatus"]
+      },
+      "then": {
+        "properties": {
+          "instructions": { "properties": { "status": { "const": "FAIL" } }, "required": ["status"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "protocolStatus": { "const": "UNKNOWN" } },
+        "required": ["protocolStatus"]
+      },
+      "then": {
+        "properties": {
+          "instructions": { "properties": { "status": { "enum": ["PASS", "UNKNOWN"] } }, "required": ["status"] }
+        },
+        "anyOf": [
+          { "properties": { "instructions": { "properties": { "status": { "const": "UNKNOWN" } }, "required": ["status"] } } },
+          { "properties": { "toolCalls": { "not": { "$ref": "#/$defs/completeTraceEvidence" } } } }
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "provenance"],
+      "properties": {
+        "value": {},
+        "provenance": { "enum": ["declared", "observed", "operator_reported", "unknown"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "provenance": { "const": "unknown" } }, "required": ["provenance"] },
+          "then": { "properties": { "value": { "type": "null" } } },
+          "else": { "properties": { "value": { "not": { "type": "null" } } } }
+        }
+      ]
+    },
+    "textMeasurement": {
+      "description": "A portable identifier or short label only. The pattern rejects common absolute path, URI, and traversal forms, but cannot detect every secret; manually sanitize values.",
+      "allOf": [
+        { "$ref": "#/$defs/measurement" },
+        {
+          "properties": {
+            "value": {
+              "type": ["string", "null"],
+              "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?![A-Za-z]:/)(?!.*://)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._+/# :-]{0,159}$"
+            }
+          }
+        }
+      ]
+    },
+    "relativeTextMeasurement": {
+      "allOf": [
+        { "$ref": "#/$defs/measurement" },
+        {
+          "properties": {
+            "value": {
+              "type": ["string", "null"],
+              "pattern": "^(?!/)(?![A-Za-z]:/)(?!.*://)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._:/ -]*$"
+            }
+          }
+        }
+      ]
+    },
+    "nonnegativeNumberMeasurement": {
+      "allOf": [
+        { "$ref": "#/$defs/measurement" },
+        { "properties": { "value": { "type": ["number", "null"], "minimum": 0 } } }
+      ]
+    },
+    "nonnegativeIntegerMeasurement": {
+      "allOf": [
+        { "$ref": "#/$defs/measurement" },
+        { "properties": { "value": { "type": ["integer", "null"], "minimum": 0 } } }
+      ]
+    },
+    "relativeArtifactPath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "completeTraceEvidence": {
+      "type": "object",
+      "required": ["traceStatus", "coverage", "coverageRefs", "traceSource"],
+      "properties": {
+        "traceStatus": { "const": "available" },
+        "coverage": { "const": "complete" },
+        "coverageRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/relativeArtifactPath" }
+        },
+        "traceSource": {
+          "allOf": [
+            { "$ref": "#/$defs/textMeasurement" },
+            {
+              "properties": {
+                "value": { "type": "string", "minLength": 1 },
+                "provenance": { "enum": ["declared", "observed", "operator_reported"] }
+              },
+              "required": ["value", "provenance"]
+            }
+          ]
+        }
+      }
+    },
+    "reviewDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewerLabel", "citationsEntailClaim", "branchCoverageComplete", "decision"],
+      "properties": {
+        "reviewerLabel": { "enum": ["A", "B"] },
+        "citationsEntailClaim": { "type": ["boolean", "null"] },
+        "branchCoverageComplete": { "type": ["boolean", "null"] },
+        "decision": { "enum": ["SUPPORTED", "UNSUPPORTED", "UNRESOLVED"] }
+      }
+    }
+  }
+}

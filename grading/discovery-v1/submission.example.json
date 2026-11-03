@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "caseId": "trace",
+  "answers": {
+    "T1": {
+      "facts": {
+        "<fact-slot-id-from-coordinator-guide>": {
+          "<structured-field>": "<faithfully-transcribed-value>"
+        }
+      },
+      "citations": [
+        {
+          "factId": "<fact-slot-id-from-coordinator-guide>",
+          "path": "/ABSOLUTE/TRIAL/ROOT/fixtures/discovery-v1/src/file.mjs",
+          "startLine": 1,
+          "endLine": 2
+        }
+      ],
+      "additionalClaims": []
+    }
+  },
+  "evidenceReviews": []
+}

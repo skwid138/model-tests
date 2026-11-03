@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:model-tests:discovery-v1:normalized-submission:v1",
+  "title": "Coordinator-normalized Discovery Benchmark v1 submission",
+  "description": "Coordinator-only input. This schema is not worker material and contains no answer key.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "answers", "evidenceReviews"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "caseId": { "enum": ["trace", "boundary"] },
+    "answers": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[TB][1-3]$" },
+      "additionalProperties": { "$ref": "#/$defs/questionAnswer" }
+    },
+    "evidenceReviews": {
+      "description": "Zero or two independent checklist decisions per question/fact. Missing decisions grade UNRESOLVED.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidenceReviewInput" }
+    }
+  },
+  "$defs": {
+    "questionAnswer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["facts", "citations", "additionalClaims"],
+      "properties": {
+        "facts": {
+          "type": "object",
+          "description": "Map coordinator fact-slot IDs to faithful structured transcriptions; omit a missing slot.",
+          "additionalProperties": true
+        },
+        "citations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/factCitation" }
+        },
+        "additionalClaims": {
+          "type": "array",
+          "description": "Atomic extra claims not covered by a required fact slot, transcribed without correction.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text", "citations"],
+            "properties": {
+              "text": { "type": "string", "minLength": 1 },
+              "citations": {
+                "type": "array",
+                "items": { "$ref": "#/$defs/locationCitation" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "factCitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["factId", "path", "startLine", "endLine"],
+      "properties": {
+        "factId": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "startLine": { "type": "integer", "minimum": 1 },
+        "endLine": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "locationCitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "startLine", "endLine"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "startLine": { "type": "integer", "minimum": 1 },
+        "endLine": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "evidenceReviewInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["questionId", "factId", "reviewerLabel", "citationsEntailClaim", "branchCoverageComplete"],
+      "properties": {
+        "questionId": { "type": "string", "pattern": "^[TB][1-3]$" },
+        "factId": { "type": "string", "minLength": 1 },
+        "reviewerLabel": { "enum": ["A", "B"] },
+        "citationsEntailClaim": { "type": "boolean" },
+        "branchCoverageComplete": { "type": "boolean" }
+      }
+    }
+  }
+}
